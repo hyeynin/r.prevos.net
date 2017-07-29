@@ -1,0 +1,63 @@
+---
+title: "Water balance"
+author: "Peter Prevos"
+date: "7 February 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+# Introduction
+
+Graph theory can be deployed to model water networks using a flow network. These are directed graphs were each edge has a capacity and each edge receievds a flow. While the mathematics of flow networks is great to model reticulation networks, it does not help to develop a water balance.
+
+A water balance is derived from a series of measurement points in a network. In a perfctly balanced network, all flows 
+
+# Wate rbalance network
+In a water balance network, 
+
+
+# Example network
+
+The units in this example are omitted. For Australians think megalitres, for Americans they could be acre-feet and for the rest of the world the units are cubic meters.
+
+```{r}
+# Define Network
+library(igraph)
+g <- graph_from_literal(A-+B:C:D, C-+E:F, D-+G, E:F-+H, G-+F)
+
+# Random flows
+set.seed(2017)
+V(g)$flows <- c(sample(30:45, 1), sample(10:15, 3),
+                sample(05:10, 2), sample(05:10, 1), 
+                sample(10:15, 1))
+
+# Visualise network
+par(mar=rep(0,4))
+plot(g, layout = layout_as_tree, 
+     vertex.color = NA, 
+     vertex.label.family = "HersheySans",
+     vertex.label.color = "black",
+     vertex.size =24,
+     vertex.label = paste(V(g)$name, V(g)$flows),
+     edge.color = "black"
+     )
+```
+
+# Total network balance
+To define the total network balance we need to know which node(s) are the start and which nodes termintate the network. We can identify these points using the degree function.
+
+```{r}
+# Total System Balance
+upstream <- which(degree(g, mode="in")==0)
+downstream <- which(degree(g, mode="out")==0)
+total.balance <-  sum(V(g)$flows[downstream]) - sum(V(g)$flows[upstream])
+print(total.balance)
+```
+
+This example system has a total water balance of (`r paste(V(g)$flows[downstream], collapse=" + ")`) - (`r paste(V(g)$flows[upstream], collapse=" + ")`) = `r total.balance` units.
+
+
+
