@@ -1,5 +1,5 @@
 library(animation)
-source("Euler/euler.R")
+source("ProjectEuler/euler.R")
 
 plotnums <- function(nums, cl="black"){
     for (n in nums) {
@@ -28,22 +28,6 @@ saveGIF({
     plotnums(seq(9,100,6), "white")
     plotnums(c(seq(25,100,30),seq(35,100,30)), "white")
     plotnums(c(49,77,91), "white")
-}, interval=1, movie.name="eratosthenes.gif", ani.width=800, ani.height=800)
-
-
-
-### 1. How to setup a simple animation ###
-## set some options first
-oopt = ani.options(interval = 1, nmax = 10)
-## use a loop to create images one by one
-for (i in 1:ani.options("nmax")) {
-    plot(rnorm(30))
-    ani.pause() ## pause for a while ('interval')
-}
-
-saveGIF({
-    ani.options(nmax = 30)
-    brownian.motion(pch = 21, cex = 5, col = "red", bg = "yellow")
-}, interval = 0.05, movie.name = "bm_demo.gif", ani.width = 600, ani.height = 600)
+}, interval=1, movie.name="Misc/eratosthenes.gif", ani.width=800, ani.height=800)
 
 
