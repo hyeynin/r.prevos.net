@@ -22,7 +22,7 @@ print(answer)
 # Solution 4
 t <- proc.time()
 SumDivBy <- function(n, m) {
-    p <- floor(m / n) * n # Round to multiple of n
+    p <- m %/% n * n # Round to multiple of n
     return (p * (1 + (p / n)) / 2)
 }
 answer <- SumDivBy(3, 999) + SumDivBy(5, 999) - SumDivBy(15, 999)

@@ -8,5 +8,5 @@ answer <- sum(1:n)^2 - sum((1:n)^2)
 print(answer)
 
 # Solution 2
-answer <- ((n*(n+1))/2)^2 - (n*(n+1)*(2*n+1))/6
+answer <- ((n * (n + 1)) / 2)^2 - (n * (n + 1) * (2 * n + 1)) / 6
 print(answer)
