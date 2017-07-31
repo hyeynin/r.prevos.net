@@ -4,6 +4,8 @@
 # Find the sum of all the numbers that can be written as the 
 # sum of fifth powers of their digits.
 
+# http://r.prevos.net/digit-fifth-powers-euler-problem-30/
+
 t <- proc.time()
 largest <- 6 * 9^5
 answer <- 0
