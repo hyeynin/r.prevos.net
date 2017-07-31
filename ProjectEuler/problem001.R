@@ -2,6 +2,8 @@
 # https://projecteuler.net/problem=1
 # Find the sum of all the multiples of 3 or 5 below 1000
 
+# http://r.prevos.net/euler-problem-1/
+
 # Solution 1
 answer <- 0
 for (i in 1:999) {
