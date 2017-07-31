@@ -1,6 +1,8 @@
 # Euler Problem 27: Quadratic primes
 # https://projecteuler.net/problem=27
 
+# http://r.prevos.net/quadratic-primes-euler-problem-27/
+
 source("ProjectEuler/euler.R")
 
 t <- proc.time()
