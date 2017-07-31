@@ -1,7 +1,8 @@
 # Problem 2: Even Fibonacci numbers
 # https://projecteuler.net/problem=2
-# By considering the terms in the Fibonacci sequence whose values do not exceed four million, 
-# find the sum of the even-valued terms.
+# By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.
+
+# http://r.prevos.net/euler-problem-2/
 
 fib <- c(1, 2)  #Define first two numbers
 while (max(fib) < 4E+06) { 
