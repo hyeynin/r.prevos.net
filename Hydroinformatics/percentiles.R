@@ -31,7 +31,6 @@ weibull.quantile <- function(x, p) {
     ((1 - rfrac) * x[floor(r)] + rfrac * x[floor(r) + 1])
 }
 
-
 # Load turbidity data
 library(RODBC)
 dwh <- odbcDriverConnect("driver={SQL Server};server=DWH;DATABASE=CW_DataWarehouse;trusted_connection=true")

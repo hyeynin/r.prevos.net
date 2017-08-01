@@ -23,3 +23,4 @@ for (m in 2:100) {
 answer <- sum(unique(pandigital.prod))
 print(answer)
 print(proc.time()-t)
+
