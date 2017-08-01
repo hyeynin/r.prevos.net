@@ -2,6 +2,8 @@
 # https://projecteuler.net/problem=3
 # What is the largest prime factor of the number 600851475143 ?
 
+# http://r.prevos.net/euler-problem-3/
+   
 # Sieve of Eratosthenes for generating primes 2:n
 esieve <- function(n) {
     if (n == 1) return(NULL)

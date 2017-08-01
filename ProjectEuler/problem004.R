@@ -2,6 +2,9 @@
 # https://projecteuler.net/problem=4
 # Find the largest palindrome made from the product of two 3-digit numbers
 
+# http://r.prevos.net/euler-problem-4/
+
+
 # Function to check for palindromic number
 palindrome <- function(x) {
     # Convert to character
