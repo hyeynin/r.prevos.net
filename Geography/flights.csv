@@ -6,7 +6,7 @@ Alice Springs,Uluru,1
 Amsterdam,Abu Dhabi,2
 Amsterdam,"Athens, Greece",2
 Amsterdam,Dhaka,1
-Amsterdam,Dubai,
+Amsterdam,Dubai,3
 Amsterdam,Hong Kong,2
 Amsterdam,Istanbul,1
 Amsterdam,Johannesburg,1
@@ -36,9 +36,9 @@ Darwin,"Melbourne, Australia",1
 Denpasar,"Melbourne, Australia",1
 Denpasar,Singapore,1
 Dhaka,Kathmandu,1
-Dhaka,Singapore,
-Dubai,Amsterdam,
-Dubai,Kuala Lumpur,
+Dhaka,Singapore,3
+Dubai,Amsterdam,3
+Dubai,Kuala Lumpur,2
 Dubai,Rome,1
 Duesseldorf,"Luxor, Egypt",1
 Duesseldorf,Moscow,1
@@ -46,7 +46,7 @@ Guangzhou,Chengdu,1
 Hanoi,Singapore,1
 Hawke's Bay,Auckland,1
 "Hobart, Australia","Melbourne, Australia",3
-Hong Kong,Amsterdam,2
+Hong Kong,Amsterdam,4
 Hong Kong,"Melbourne, Australia",2
 Hong Kong,Moscow,1
 Johannesburg,Amsterdam,1
@@ -54,7 +54,7 @@ Johannesburg,"Athens, Greece",1
 Johannesburg,Windhoek,1
 Kathmandu,Dhaka,1
 Kathmandu,Lukla,1
-Kuala Lumpur,"Melbourne, Australia",
+Kuala Lumpur,"Melbourne, Australia",2
 Limbang,Miri,1
 London,Amsterdam,1
 London,Windhoek,1
@@ -64,17 +64,17 @@ Lukla,Kathmandu,1
 "Manchester, England",Amsterdam,2
 "Melbourne, Australia",Abu Dhabi,2
 "Melbourne, Australia",Adelaide,1
-Adelaide,"Melbourne, Australia",
+Adelaide,"Melbourne, Australia",1
 "Melbourne, Australia",Alice Springs,2
 "Melbourne, Australia","Athens, Greece",1
-"Melbourne, Australia",Auckland,
+"Melbourne, Australia",Auckland,2
 "Melbourne, Australia",Brisbane,
 "Melbourne, Australia",Christchurch,1
 "Melbourne, Australia",Darwin,1
 "Melbourne, Australia",Denpasar,1
-"Melbourne, Australia",Dubai,
+"Melbourne, Australia",Dubai,3
 "Melbourne, Australia","Hobart, Australia",3
-"Melbourne, Australia",Hong Kong,
+"Melbourne, Australia",Hong Kong,2
 "Melbourne, Australia",Perth,2
 "Melbourne, Australia",Port Douglas,2
 "Melbourne, Australia",Singapore,
@@ -112,3 +112,5 @@ Ho Chi Minh,Hanoi,1
 "Melbourne, Australia",Ho Chi Minh,1
 Hanoi,Ho Chi Minh,1
 Ho Chi Minh,"Melbourne, Australia",1
+Harare,Johannesburg,1
+Syney,Santiago de Chili,
