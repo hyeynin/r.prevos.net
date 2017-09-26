@@ -24,7 +24,7 @@
 \ccoppy{\ccLogo \enspace Creative Commons Attribution-ShareAlike 3.0}
 \copnum{International License}
 
-\authornote{This paper was prepared for the undergraduate course \eph{Psychology 1A} of Monash University, Melbourne.}
+\authornote{This paper was prepared for the \emph{Psychology 1A} course of Monash University, Melbourne.}
 
 \note{20 February 2005}
 
@@ -161,6 +161,7 @@ ggsave("other.pdf", width = 100, height = 75, units = "mm")
 \subsection{Body Dissatisfaction}
 
 The body dissatisfaction value for women found in this survey confirms previous research conducted in this area and is very close to the figure found by \citeA{fallon_sex_1985}. There is thus no indication that the high body dissatisfaction among young women has been decreasing over the past twenty years. One of the reasons most often cited for this continuing body dissatisfaction among young women is the influence of the media. 
+
 The media often reply that they are merely reflecting the ideals of the current generation. Previous research has, however, shown that the press indeed plays a significant role in shaping, rather than reflecting, perceptions of the female body \cite{turner_influence_1997}. There seems to be a circularity that needs to be broken to decrease body dissatisfaction among young women and reduce the occurrence of eating disorders. The only group that can take the first step is the media and the fashion industry. It is, however, doubtful that this will happen, given the commercial interests at stake.
 
 The results of this study indicate that men are also slightly dissatisfied with their body shape. The ideal body image of men is slightly larger than their current shape \cite{fallon_sex_1985,tiggeman_body-size_1992}. There are, however, differences in age cohorts for men. Younger men were shown to display positive body dissatisfaction older men a negative body dissatisfaction. If the outcomes of this survey regarding the body dissatisfaction of men are statistically significant, then there are two possible reasons for the difference in the results. The ideal body image for men could have decreased in the twelve years between this study and the most recent reference cited above. Another reason could be an increase in actual body size. The real body shape for men in this study is indeed slightly larger, and the ideal body shape for men is slightly slimmer than previously reported \cite{lamb_body_1993}.
@@ -182,6 +183,6 @@ The results of this survey show that the ideal body shape increases as women get
 
 This study has confirmed most of the findings of earlier research. Further research into male body dissatisfaction is required to confirm the results of this study. Also, study into the motivation for young men and women to be thinner is needed to determine how this trend of increasing body dissatisfaction can be turned around.
 
-\bibliography{BodyImage}
+\bibliography{Body_Image}
 
 \end{document}
