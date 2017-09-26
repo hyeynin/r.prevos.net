@@ -1,6 +1,6 @@
 # The Devil is in the data (r.prevos.net)
 
-This repository holds the R-code related to the The Devil is in the Data blog (r.prevos.net).
+This repository holds the R-code related to the The Devil is in the Data blog [r.prevos.net](http://r.prevos.net).
 
 * Geography: Scripts related to geographical analysis
 * Hydroinformatics: Data Science for water utilities
