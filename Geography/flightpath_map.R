@@ -41,7 +41,6 @@ circ <- which(abs(flights$lon.y - flights$lon.x) > 180)
 flights[circ, ]
 flights$lon.y[circ] <- ifelse(flights$lon.y[circ] < 0, 180, -180)
 flights$lat.y[circ] <- rowSums(flights[circ, c("lat.x", "lat.y")]) / 2
-
 flights <- rbind(flights, 
                  data_frame(From = rep("", length(circ)),
                             To = flights$To[circ],
