@@ -16,6 +16,8 @@ Amsterdam,"Manchester, England",2
 Amsterdam,Reykjavik,1
 Amsterdam,Singapore,2
 Amsterdam,Sofia,1
+Amsterdam,Frankfurt,1
+Frankfurt,Frankfurt,1
 "Athens, Greece",Amsterdam,3
 "Athens, Greece",Johannesburg,1
 "Athens, Greece","Melbourne, Australia",1
@@ -42,6 +44,8 @@ Dubai,Kuala Lumpur,2
 Dubai,Rome,1
 Duesseldorf,"Luxor, Egypt",1
 Duesseldorf,Moscow,1
+Frankfurt,Amsterdam,1
+Frankfurt,Singapore,1
 Guangzhou,Chengdu,1
 Hanoi,Singapore,1
 Hawke's Bay,Auckland,1
@@ -79,7 +83,7 @@ Adelaide,"Melbourne, Australia",1
 "Melbourne, Australia",Port Douglas,2
 "Melbourne, Australia",Singapore,
 "Melbourne, Australia",Sydney,
-"Melbourne, Australia",Wellington,
+"Melbourne, Australia",Wellington,2
 Miri,Gunung Mulu,1
 Moscow,Duesseldorf,1
 Moscow,Hong Kong,1
@@ -113,4 +117,7 @@ Ho Chi Minh,Hanoi,1
 Hanoi,Ho Chi Minh,1
 Ho Chi Minh,"Melbourne, Australia",1
 Harare,Johannesburg,1
-Syney,Santiago de Chili,
+Brisbane,Tokyo,
+Tokyo,Zürich,
+Frankfurt,San Francisco,
+San Francisco,Sydney,
