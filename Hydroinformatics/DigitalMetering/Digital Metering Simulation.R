@@ -1,5 +1,5 @@
 # Digital Metering Simulation
-# 
+# https://r.prevos.net/simulating-water-consumption/ 
 
 # Libraries
 library(tidyverse)
@@ -78,17 +78,16 @@ meter_reads <- filter(meter_reads, remove == 0) %>%
 write.csv(meter_reads, "Hydroinformatics/DigitalMetering/meter_reads.csv", row.names = FALSE)
 
 # Visualise
-
-  filter(meter_reads, DevEUI %in% rtu[2]) %>%
-    mutate(TimeStampAEST = as.POSIXct(format(TimeStampUTC, 
-                                             tz = "Australia/Melbourne"))) %>%
-    filter(TimeStampAEST >= as.POSIXct("2020-02-06") & 
-             TimeStampAEST <= as.POSIXct("2020-02-08")) %>%
-    arrange(DevEUI, TimeStampAEST) %>% 
+filter(meter_reads, DevEUI %in% rtu[2]) %>%
+  mutate(TimeStampAEST = as.POSIXct(format(TimeStampUTC, 
+                                           tz = "Australia/Melbourne"))) %>%
+  filter(TimeStampAEST >= as.POSIXct("2020-02-06") & 
+         TimeStampAEST <= as.POSIXct("2020-02-08")) %>%
+  arrange(DevEUI, TimeStampAEST) %>% 
   ggplot(aes(x = TimeStampAEST, y = Count, colour = factor(DevEUI)))  + 
-  geom_line() + geom_point() 
+    geom_line() + geom_point() 
 
-
+ggsave("Hydroinformatics/DigitalMetering/consumption.png", dpi = 300)
 
 
 
