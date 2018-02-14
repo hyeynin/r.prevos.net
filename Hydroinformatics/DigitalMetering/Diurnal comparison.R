@@ -60,7 +60,7 @@ plot_diurnal_connections_round <- function(rtus, dates) {
   slice_reads(rtus, dates) %>%
     group_by(DevEUI) %>%
     mutate(Hour = as.integer(format(TimeStampAEST + 1800, "%H")),
-           Time = c(0, diff(Hour)),
+           Time = c(0, diff(TimeStampAEST)),
            Flow = c(0, diff(Count * 5)),
            Rate = Flow / Time) %>%
     group_by(Hour) %>%
@@ -71,6 +71,20 @@ plot_diurnal_connections_round <- function(rtus, dates) {
     geom_line(aes(x = Hour, y = mean), col = "orange", size = 1) +
     ggtitle("Connections Diurnal flow (rounded)") + ylab("Flow rate [L/h]")
 }
+
+plot_diurnal_network_round <- function(rtus, dates) {
+  slice_reads(rtus, dates) %>%
+    group_by(DevEUI) %>%
+    mutate(Hour = as.integer(format(TimeStampAEST + 1800, "%H")),
+           Time = c(0, diff(TimeStampAEST)),
+           Flow = c(0, diff(Count * 5)),
+           Rate = Flow / Time) %>%
+    filter(Rate >= 0) %>%
+    mutate(RoundedTime) <- 
+    
+}
+
+
 
 ptm <- proc.time()
 p2 <- plot_diurnal_connections_round(rtu[12:20], c("2020-02-01", "2020-03-01"))

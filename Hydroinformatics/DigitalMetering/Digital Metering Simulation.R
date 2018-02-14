@@ -5,7 +5,7 @@
 library(tidyverse)
 # Boundary conditions
 n <- 100 # Number of simulated meters
-d <- 100 # Number of days to simulate
+d <- 366 # Number of days to simulate
 s <- as.POSIXct("2020-01-01", tz = "UTC") # Start of simulation
 
 set.seed(1969) # Seed random number generator for reproducibility
@@ -65,7 +65,7 @@ faulty <- rtu[rbinom(n, 1, prob = 0.02) == 1]
 meter_reads$remove[meter_reads$DevEUI %in% faulty] <- rbinom(sum(meter_reads$DevEUI %in% faulty), 1, prob = .95)
 
 # Data loss
-missing <- sample(1:(nrow(meter_reads) - 5), 0.005 * nrow(meter_reads))
+missing <- sample(1:(nrow(meter_reads) - 5), 0.01 * nrow(meter_reads))
 for (m in missing){
   meter_reads[m:(m + sample(1:5, 1)), "remove"] <- 1
 }
