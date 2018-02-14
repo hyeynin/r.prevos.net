@@ -4,12 +4,12 @@ library(RColorBrewer)
 library(gridExtra)
 
 # Read data
-if (!file.exists("Hydroinformatics/prettyboy.csv")) {
+if (!file.exists("Hydroinformatics/Reservoirs/prettyboy.csv")) {
     url <- "http://www.mgs.md.gov/ReservoirDataPoints/PrettyBoy1998.dat"
     prettyboy <- read.csv(url, skip = 2, header = FALSE)
     names(prettyboy) <- read.csv(url, nrows = 1, header = FALSE, stringsAsFactors = FALSE)
-    write_csv(prettyboy, "Hydroinformatics/prettyboy.csv")
-} else prettyboy <- read_csv("Hydroinformatics/prettyboy.csv")
+    write_csv(prettyboy, "Hydroinformatics/Reservoirs/prettyboy.csv")
+} else prettyboy <- read_csv("Hydroinformatics/Reservoirs/prettyboy.csv")
 head(prettyboy)
 
 # Remove extremes, duplicates and Anomaly
@@ -19,8 +19,7 @@ ext <- c(which(prettyboy$Easting == min(prettyboy$Easting)),
 prettyboy <- prettyboy[-ext, ]
 
 # Visualise reservoir
-bathymetry_colours <- c(rev(brewer.pal(3, "Greens"))[-2:-3], 
-                        brewer.pal(9, "Blues")[-1:-3])
+bathymetry_colours <- c(rev(brewer.pal(3, "Greens"))[-2:-3], brewer.pal(9, "Blues")[-1:-3])
 ggplot(prettyboy, aes(x = Easting, y = Northing, colour = Depth)) + 
     geom_point(size = .1) + coord_equal() + 
     scale_colour_gradientn(colors = bathymetry_colours) 
@@ -30,7 +29,7 @@ ggsave("Hydroinformatics/prettyboy_bathymetry.png")
 library(psych)
 
 # Read data
-customers <- read_csv("Hydroinformatics/customers.csv")
+customers <- read_csv("Hydroinformatics/Customers/customer_survey.csv")
 
 # Exploratory Analyis
 p1 <- customers[,1:10] %>% 
