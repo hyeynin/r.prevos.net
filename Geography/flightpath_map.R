@@ -7,17 +7,30 @@ library(ggmap)
 library(ggrepel)
 
 # Read flight and airports lists 
-flights <- read.csv("Geography/flights.csv", stringsAsFactors = FALSE)
-airports <- read.csv("Geography/airports.csv", stringsAsFactors = FALSE)
+flights <- read_csv("Geography/flights.csv")
+
+airports_file <- "Geography/airports.csv"
+
+if (file.exists(airports_file)) {
+  airports <- read_csv(airports_file)
+  } else {
+  airports <- data_frame(airport = NA, lon = NA, lat= NA)
+}
 
 # Lookup coordinates
+# Some airports need counry names to ensure Google finds the correct location
+# The geocoding keeps looping till all coordinates have been found
 destinations <- unique(c(flights$From, flights$To))
 new_destinations <- destinations[!destinations %in% airports$airport]
-if (length(new_destinations) > 0) {
-    coords <- geocode(new_destinations)
-    airports <- rbind(airports, data.frame(airport = new_destinations, coords))
-    write.csv(airports, "Geography/airports.csv", row.names = FALSE)
-    }
+while (length(new_destinations) > 0) {
+    new_airports <- geocode(new_destinations) %>%
+      mutate(airport = new_destinations) %>%
+      select(airport, lon, lat)
+    airports <- rbind(airports, new_airports) %>%
+      filter(!is.na(lon) | !is.na(lat))
+    new_destinations <- destinations[!destinations %in% airports$airport]
+}
+write_csv(airports, "Geography/airports.csv")
 
 # Remove return flights
 d <- vector()
@@ -36,20 +49,17 @@ flights <- flights %>%
   select(From, To, lon.x, lat.x, lon.y, lat.y) %>% 
   as_data_frame()
 
-# Circumnaviation
+# Split Circumnaviation Flights at -180/180 degrees
 circ <- which(abs(flights$lon.y - flights$lon.x) > 180)
-flights[circ, ]
+flights[circ,]
 flights$lon.y[circ] <- ifelse(flights$lon.y[circ] < 0, 180, -180)
 flights$lat.y[circ] <- rowSums(flights[circ, c("lat.x", "lat.y")]) / 2
-flights <- rbind(flights, 
-                 data_frame(From = rep("", length(circ)),
-                            To = flights$To[circ],
-                            lon.x = -flights$lon.y[circ],
-                            lat.x = flights$lat.y[circ],
-                            lon.y = airports[airports$airport %in% flights$To[circ], "lon"],
-                            lat.y = airports[airports$airport %in% flights$To[circ], "lat"])
-                 )
-  
+leg2 <- airports %>%
+  filter(airport %in% flights$To[circ]) %>%
+  mutate(From = rep("", length(circ))) %>%
+  mutate(lon.x = -flights$lon.y[circ], lat.x = flights$lat.y[circ]) %>%
+  select(From, To = airport, lon.x, lat.x, lon.y = lon, lat.y = lat)
+flights <- rbind(flights, leg2)
 
 # Remove country names
 airports$airport <- as.character(airports$airport)
@@ -71,11 +81,6 @@ ggplot() + worldmap +
           axis.title.y = element_blank()
     )
 
-ggsave("Geography/flights_map.png")
+ggsave("Geography/flights_map.png", dpi = 300)
 
-# geom_curve curvature test
-data.frame(x1 = c(1, 3), 
-           y1 = c(2, 3),
-           x2 = c(2, 2),
-           y2 = c(1, 2)) %>% 
-  ggplot() + geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2))
+
