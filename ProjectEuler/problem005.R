@@ -19,13 +19,10 @@ print(proc.time()-t)
 # David Radcliffe
 
 t <- proc.time()
-
 gcd <- function (x, y) ifelse(x == 0, y, gcd(y %% x, x))
 lcm <- function (x, y) x * y / gcd(x,y)
-
 answer <- (Reduce(lcm, 1:20, accumulate=FALSE))
 print(answer)
-
 print(proc.time()-t)
 
 

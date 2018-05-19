@@ -1,17 +1,13 @@
-# Problem 4: Largest Palindromic Product
-# https://projecteuler.net/problem=4
-# Find the largest palindrome made from the product of two 3-digit numbers
+## Euler Problem 4: Largest palindrome product
+## https://projecteuler.net/problem=4
+library(tidyverse)
 
-# http://r.prevos.net/euler-problem-4/
-
-
-# Function to check for palindromic number
 palindrome <- function(x) {
-    # Convert to character
+    ## Convert to character
     word <- as.character(x)
-    # Create reverse
+    ## Create reverse
     reverse <- paste(rev(unlist(strsplit(word, ""))), collapse = "")
-    # Check whether palindrome
+    ## Check whether palindrome
     return(word == reverse)
 }
 
@@ -28,20 +24,11 @@ for (i in 999:900) {
 answer <- i * j
 print(answer)
 
-# Count palindromes
-pals <- data.frame(x = NA, y = NA)
-p <- 0
-for (n in 1:1000000) {
-    if (palindrome(n)) {
-      p <- p + 1
-      pals <- rbind(pals, data.frame(x = n, y = p))
-    } 
-    
-}
-
-library(ggplot2)
-ggplot(pals[-1,], aes(x=x, y=y)) + geom_line() +
-    xlab("n") + ylab("Palindromic numbers") + ggtitle("Euler Problem 4")
-ggsave("ProjectEuler/Images/problem004.png")
-
-
+## A002113 Palindromes in base 10
+p_max <- 1.5E5
+A002113 <- which(lapply(1:p <- max, palindrome) == TRUE)
+data_frame(x = 1:p_max,
+           y = sapply(1:p_max, function(p) length(A002113[A002113 < p]))
+           ) %>%
+    ggplot(aes(x, y)) + geom_line() +
+    xlab("n") + ylab("Palindromic numbers <n")

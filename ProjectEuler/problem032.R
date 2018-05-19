@@ -1,10 +1,9 @@
-# Problem 32: Pandigital products
-# https://projecteuler.net/problem=32
+## Euler Problem 32
+## https://projecteuler.net/problem=32
 
 pandigital.9 <- function(x) # Test if string is 9-pandigital
     (length(x)==9 & sum(duplicated(x))==0 & sum(x==0)==0)
 
-t <- proc.time()
 pandigital.prod <- vector()
 i <- 1
 for (m in 2:100) {
@@ -22,5 +21,19 @@ for (m in 2:100) {
 }
 answer <- sum(unique(pandigital.prod))
 print(answer)
-print(proc.time()-t)
 
+largest <- 6 * 9^5
+answer <- 0
+for (n in 2:largest) {
+    power.sum <- 0
+    i <- n
+    while (i > 0) {
+        d <- i %% 10
+        i <- floor(i / 10)
+        power.sum <- power.sum + d^5
+    }
+    if (power.sum == n) {
+        answer <- answer + n
+    }
+}
+print(answer)
