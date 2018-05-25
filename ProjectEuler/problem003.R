@@ -46,34 +46,3 @@ max(prime.factors(600851475143))
 ## Using number package
 library(numbers)
 max(primeFactors(600851475143))
-
-## Sieve animation
-library(animation)
-
-plot.sieve <- function(n){
-    plot.new()
-    plot.window(xlim = c(0, 90), ylim = c(0, 90))
-    par(mar = rep(0, 4))
-    abline(h = seq(5, 100, 10), col = "grey")
-    abline(v = seq(5, 100, 10), col = "grey")
-    x <- 10 * (0:99 %% 10)
-    y <- 100 - (0:99 - 0:99 %% 10) - 10
-    text(x, y, 1:100, col = "black", cex = 3)
-    for (i in 1:n) {
-        text(x[d[[i]]], y[d[[i]]], d[[i]], col = c[i], cex = 3)
-    }
-}
-
-d <- list(1,
-          seq(4, 100, 2),
-          seq(9, 100, 6),
-          c(seq(25,100,30),seq(35,100,30)),
-          c(49, 77, 91))
-c <- c("red", "green", "blue", "orange", "purple")
-
-saveGIF({
-    ani.options(interval = 2)
-    for (i in 1:5) {
-        plot.sieve(i)
-        }
-}, movie.name = "Images/Eratosthenes.gif", ani.width = 800, ani.height = 800)

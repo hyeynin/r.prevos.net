@@ -26,9 +26,10 @@ print(answer)
 
 ## A002113 Palindromes in base 10
 p_max <- 1.5E5
-A002113 <- which(lapply(1:p <- max, palindrome) == TRUE)
+A002113 <- which(lapply(1:p, palindrome) == TRUE)
 data_frame(x = 1:p_max,
            y = sapply(1:p_max, function(p) length(A002113[A002113 < p]))
            ) %>%
     ggplot(aes(x, y)) + geom_line() +
     xlab("n") + ylab("Palindromic numbers <n")
+ggsave("Images/problem004.png", dpi = 300)

@@ -9,6 +9,7 @@ while (max(fib) < 4E+06) {
 answer <- sum(fib[fib %% 2 == 0])
 print(answer)
 
+## GNU Multiple Precision Arithmetic Library
 library(gmp)
 i <- 1
 answer <- 0

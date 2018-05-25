@@ -1,30 +1,14 @@
-# Problem 5: Smallest multiple
-# https://projecteuler.net/problem=5
-# What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
-
-# http://r.prevos.net/euler-problem-5/
-    
-t <- proc.time()
-# Start as high as possible
+## Euler Problem 5: Smallest Multiple
+## https://projecteuler.net/problem=4
 i <- 2520
-# Check consecutive numbers for divisibility by 1:20
-while (sum(i%%(1:20)) != 0) {
+while (sum(i %% (1:20)) != 0) {
     i <- i + 2520
 }
 answer <- i
 print(answer)
-print(proc.time()-t)
 
-# Analytical Solution using Euclidean algorithm
-# David Radcliffe
-
-t <- proc.time()
-gcd <- function (x, y) ifelse(x == 0, y, gcd(y %% x, x))
-lcm <- function (x, y) x * y / gcd(x,y)
-answer <- (Reduce(lcm, 1:20, accumulate=FALSE))
-print(answer)
-print(proc.time()-t)
-
-
-
-
+## Analytical solution by David Radcliffe
+## Euclidean algorithm
+gcd = function (x, y) ifelse(x == 0, y, gcd(y %% x, x))
+lcm = function (x, y) x*y/gcd(x,y)
+print(Reduce(lcm, 1:20))
