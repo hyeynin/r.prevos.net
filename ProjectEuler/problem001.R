@@ -1,4 +1,5 @@
 ## Euler Problem : Multiples of 3 and 5
+## https://projecteuler.net/problem=1
 ## https://r.prevos.net/euler-problem-1/
 
 ## Solution 1

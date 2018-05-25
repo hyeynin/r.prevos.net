@@ -1,5 +1,7 @@
 ## Euler Problem 4: Largest palindrome product
 ## https://projecteuler.net/problem=4
+## https://r.prevos.net/euler-problem-4/
+
 library(tidyverse)
 
 palindrome <- function(x) {

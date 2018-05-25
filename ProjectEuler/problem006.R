@@ -1,5 +1,6 @@
 ## Euler Problem 6: Sum Square Difference
 ## https://projecteuler.net/problem=6
+## https://r.prevos.net/euler-problem-6/
 
 ## Brute force
 n <- 100

@@ -1,5 +1,7 @@
 ## Euler Problem 8: Largest product in a series
 ## https://projecteuler.net/problem=8
+## https://r.prevos.net/euler-problem-8/
+
 library(rvest)
 digits <- read_html("https://projecteuler.net/problem=8") %>%
     html_nodes("p") %>%

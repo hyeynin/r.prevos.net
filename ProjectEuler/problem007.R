@@ -1,7 +1,9 @@
 ## Euler Problem 7: 10,001st Prime
 ## https://projecteuler.net/problem=7
+# #https://r.prevos.net/euler-problem-7/
 
-source("euler.R")
+source("euler.R") ## Project Euler functions
+
 is.prime <- function(n) {
     primes <- esieve(ceiling(sqrt(n)))
     prod(n %% primes!=0)==1

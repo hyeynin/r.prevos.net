@@ -1,8 +1,9 @@
-# Probelm 13: Large Sum
-# https://projecteuler.net/problem=13
+## Probelm 13: Large Sum
+## https://projecteuler.net/problem=13
+## https://r.prevos.net/euler-problem-13/
 
 library(gmp)
-numbers <- readLines("ProjectEuler/Data/p013_numbers.txt")
+numbers <- readLines("Data/p013_numbers.txt")
 
 gmp_method <- function() {
     digits <- sum(as.bigz(numbers))
@@ -10,9 +11,9 @@ gmp_method <- function() {
     return(answer)
     }
 
-# Add numbers with many digits
+## Add numbers with many digits
 big.add <- function(a, b) {
-    # Add leading zeros to smallest number
+    ## Add leading zeros to smallest number
     if (nchar(a)<nchar(b)) 
         a <- paste0(paste(rep(0, nchar(b)-nchar(a)), collapse=""), a)
     if (nchar(a)>nchar(b)) 
@@ -42,11 +43,10 @@ base_method <- function() {
     return(answer)
 }
 
-# Benchmarking
+## Benchmarking
 library(microbenchmark)
 library(ggplot2)
-tm <- microbenchmark(gmp_method(),
-                     base_method())
+tm <- microbenchmark(gmp_method(), base_method())
 autoplot(tm)
 
 

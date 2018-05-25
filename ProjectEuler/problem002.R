@@ -1,5 +1,7 @@
 ## Euler Problem 2: Even Fibonacci numbers
+## https://projecteuler.net/problem=2
 ## https://r.prevos.net/euler-problem-2/
+
 fib <- c(1, 2)  #Define first two numbers
 while (max(fib) < 4E+06) {
     # Generate Fibonacci numbers until limit is reached

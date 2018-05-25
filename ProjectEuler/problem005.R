@@ -1,5 +1,7 @@
 ## Euler Problem 5: Smallest Multiple
-## https://projecteuler.net/problem=4
+## https://projecteuler.net/problem=5
+## https://r.prevos.net/euler-problem-5/
+
 i <- 2520
 while (sum(i %% (1:20)) != 0) {
     i <- i + 2520
