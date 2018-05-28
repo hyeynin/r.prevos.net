@@ -15,24 +15,24 @@ gmp_method <- function() {
 big.add <- function(a, b) {
     ## Add leading zeros to smallest number
     if (nchar(a)<nchar(b)) 
-        a <- paste0(paste(rep(0, nchar(b)-nchar(a)), collapse=""), a)
+        a <- paste0(paste(rep(0, nchar(b) - nchar(a)), collapse = ""), a)
     if (nchar(a)>nchar(b)) 
-        b <- paste0(paste(rep(0, nchar(a)-nchar(b)), collapse=""), b)
+        b <- paste0(paste(rep(0, nchar(a) - nchar(b)), collapse = ""), b)
     solution <- vector()
     remainder <- 0
     for (i in nchar(b):1) {
         p <- as.numeric(substr(a, i, i))
         q <- as.numeric(substr(b, i, i))
         r <- p + q + remainder
-        if (r >= 10 & i!=1) {
+        if (r >= 10 & i != 1) {
             solution <- c(solution, r %% 10)
-            remainder <- (r - (r %% 10))/10
+            remainder <- (r - (r %% 10)) / 10
         } else {
             solution <- c(solution, r)
             remainder <- 0
         }
     }
-    return(paste(rev(solution), collapse=""))
+    return(paste(rev(solution), collapse = ""))
 }
 
 base_method <- function() {

@@ -1,5 +1,5 @@
-# Problem 16: Power digit sum
-# https://projecteuler.net/problem=16
+## Problem 16: Power digit sum
+## https://projecteuler.net/problem=16
 
 t<- proc.time()
 library(gmp)
@@ -9,7 +9,7 @@ answer <- sum(as.numeric(answer))
 print(answer)
 print(proc.time()-t)
 
-source("ProjectEuler/euler.R")
+source("euler.R")
 
 t <- proc.time()
 pow <- 2
@@ -20,11 +20,11 @@ print(answer)
 print(proc.time()-t)
 
 t <- proc.time()
-# Raise 2 to the power 1000
+## Raise 2 to the power 1000
 pow <- 2
 for (i in 2:1000)
     pow <- big.add(pow, pow)
-# Sum all digits
+## Sum all digits
 answer <- sum(as.numeric(unlist(strsplit(pow, ""))))
 print(answer)
 print(proc.time()-t)

@@ -1,11 +1,13 @@
 ## Euler Problem 14: Longest Collatz sequence
 ## https://projecteuler.net/problem=14
+## https://r.prevos.net/euler-problem-14-collatz-sequence/
+
 library(tidyverse)
 collatz.chain <- function(n) {
     chain <- vector()
     i <- 1
     while (n != 1) {
-        if (n%%2 == 0)
+        if (n %% 2 == 0)
             n <- n / 2
         else
             n <- 3 * n + 1
@@ -37,13 +39,14 @@ for (n in 2:1E6) {
 answer <- which.max(collatz.length)
 print(answer)
 
+## Collatz Network
+library(igraph)
 edgelist <- data.frame(a = 2, b = 1)
 for (n in 3:26) {
    chain <- as.character(c(n, collatz.chain(n)))
    chain <- data.frame(a = chain[-length(chain)], b = chain[-1])
    edgelist <- rbind(edgelist, chain)
 }
-library(igraph)
 g <- graph.edgelist(as.matrix(edgelist))
 g <- simplify(g)
 par(mar = rep(0,4))
