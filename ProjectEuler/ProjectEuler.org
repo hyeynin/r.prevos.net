@@ -1,0 +1,609 @@
+#+TITLE: Project Euler
+
+* Pandigital Products: Euler Problem 32
+Euler Problem 32 returns to [[http://r.prevos.net/euler-problem-29-distinct-powers/][pandigital numbers]], which are numbers that contain one of each digit. Like so many of the Euler Problems, these numbers seem to serve no practical purpose whatsoever, other than some entertainment value. You can find all pandigital numbers in base-10 in the Online Encyclopedia of Integers ([[https://oeis.org/A050278][A050278]]). The Numberphile video explains everything you ever wanted to know about pandigital numbers but were afraid to ask.
+https://www.youtube.com/watch?v=gaVMrqzb91w&t=9s
+** Euler Problem 32 Definition
+We shall say that an /n/-digit number is pandigital if it makes use of all the digits 1 to /n/ exactly once; for example, the 5-digit number, 15234, is 1 through 5 pandigital.
+
+The product 7254 is unusual, as the identity, 39 × 186 = 7254, containing multiplicand, multiplier, and product is 1 through 9 pandigital.
+
+Find the sum of all products whose multiplicand/multiplier/product identity can be written as a 1 through 9 pandigital.
+
+HINT: Some products can be obtained in more than one way so be sure to only include it once in your sum.
+** Proposed Solution
+The =pandigital.9= function tests whether a string classifies as a pandigital number. The =pandigital.prod= vector stores the multiplication.
+
+The only way to solve this problem by is brute force and try all multiplications, but we can limit the solution space to a manageable number. The multiplication needs to have ten digits. For example, when the starting number has two digits, the second number should have three digits so that the total has four digits, e.g.: 39 × 186 = 7254. When the first number only has one digit, the second number needs to have four digits.
+
+#+BEGIN_SRC R :results output :tangle problem032.R
+## Euler Problem 32
+## https://projecteuler.net/problem=32
+
+pandigital.9 <- function(x) # Test if string is 9-pandigital
+    (length(x)==9 & sum(duplicated(x))==0 & sum(x==0)==0)
+
+pandigital.prod <- vector()
+i <- 1
+for (m in 2:100) {
+    if (m < 10) n_start <- 1234 else n_start <- 123
+    for (n in n_start:round(10000 / m)) {
+        # List of digits
+        digs <- as.numeric(unlist(strsplit(paste0(m, n, m * n), "")))
+        # is Pandigital?
+        if (pandigital.9(digs)) {
+            pandigital.prod[i] <- m * n
+            i <- i + 1
+            print(paste(m, "*", n, "=", m * n))
+        }
+    }
+}
+answer <- sum(unique(pandigital.prod))
+print(answer)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+[1] "4 * 1738 = 6952"
+[1] "4 * 1963 = 7852"
+[1] "12 * 483 = 5796"
+[1] "18 * 297 = 5346"
+[1] "27 * 198 = 5346"
+[1] "28 * 157 = 4396"
+[1] "39 * 186 = 7254"
+[1] "42 * 138 = 5796"
+[1] "48 * 159 = 7632"
+[1] 45228
+#+end_example
+You can view the most recent version of this code on [[https://github.com/pprevos/r.prevos.net/blob/master/ProjectEuler/problem032.R][GitHub]].
+* Euler Problem 31
+* Digit fifth powers: Euler Problem 30
+Euler problem 30 is another number crunching task that deals with numbers to the power of five. Two other Euler problems dealt with raising numbers to a power. The [[http://r.prevos.net/euler-problem-29-distinct-powers/][previous problem]] looked at permutations of powers and [[http://r.prevos.net/euler-problem-16-power-digit-sum/][problem 16]] asks for the sum of the digits of $2^{1000}$.
+
+Numberphile has a nice video that shows a trick to quickly calculate the fifth root of a number that makes you look like a mathematical wizard.
+
+https://www.youtube.com/watch?v=y8acoaakvPM
+
+** Euler Problem 30 Definition
+Surprisingly there are only three numbers that can be written as the sum of fourth powers of their digits:
+
+$1634 = 1^4 + 6^4 + 3^4 + 4^4$
+
+$8208 = 8^4 + 2^4 + 0^4 + 8^4$
+
+$9474 = 9^4 + 4^4 + 7^4 + 4^4$
+
+As $ 1 = 1^4$ is not a sum, it is not included.
+
+The sum of these numbers is $latex 1634 + 8208 + 9474 = 19316$. [[https://projecteuler.net/problem=30][Find the sum of all the numbers that can be written as the sum of fifth powers of their digits]].
+** Proposed Solution
+The problem asks for a brute-force solution but we have a halting problem. How far do we need to go before we can be certain there are no sums of fifth power digits? The highest digit is $latex 9 $ and $9^5=59049$, which has five digits. If we then look at $5 \times 9^5=295245$, which has six digits and a good endpoint for the loop. The loop itself cycles through the digits of each number and tests whether the sum of the fifth powers equals the number.
+
+#+BEGIN_SRC R :results output :tangle problem032.R
+  largest <- 6 * 9^5
+  answer <- 0
+  for (n in 2:largest) {
+      power.sum <- 0
+      i <- n
+      while (i > 0) {
+          d <- i %% 10
+          i <- floor(i / 10)
+          power.sum <- power.sum + d^5
+      }
+      if (power.sum == n) {
+          answer <- answer + n
+      }
+  }
+  print(answer)
+#+END_SRC
+
+#+RESULTS:
+: [1] 443839
+
+View the most recent version of this code on [[https://github.com/pprevos/r.prevos.net/blob/master/ProjectEuler/problem030.R][GitHub]].
+* Longest Collatz Sequence: Euler Problem 14
+Euler Problem 14 looks at the [[https://en.wikipedia.org/wiki/Collatz_conjecture][Collatz Conjecture]]. These playful sequences, named after German mathematician Lothar Collatz (1910–1990), cause mathematicians many headaches. This video introduces the problem much better than I can describe it.
+https://www.youtube.com/watch?v=5mFpVDpKX70
+** Euler Problem 14 Definition
+The following iterative sequence is defined for the set of positive integers:
+
+- $n \rightarrow n/2$ ( $n$ is even)
+- $n \rightarrow 3n + 1$ ( $n$ is odd)
+
+Using the rule above and starting with 13, we generate the following sequence:
+
+$13 \rightarrow 40 \rightarrow 20 \rightarrow 10 \rightarrow 5 \rightarrow 16 \rightarrow 8 \rightarrow 4 \rightarrow 2 \rightarrow 1$
+
+This sequence (starting at 13 and finishing at 1) contains 10 terms. Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1. [[https://projecteuler.net/problem=14][Which starting number, under one million, produces the longest chain?]] Note: Once the chain starts the terms are allowed to go above one million.
+** Proposed Solution
+This problem is highly computationally intensive. Generating one million Collatz sequences and finding the longest one using brute force requires a lot more than a minute of processing time allowed for in Project Euler. The optimised version is much faster than blindly testing all options. The code stores the length of all sequences in an array. When the code generates a sequence and lands on a number already analysed, it adds that previous number to the current one and moves on to the next number. This approach requires more memory but saves a lot of computation time. A minor additional tweak to the code optimises the rule for uneven numbers. Tripling an uneven number and adding one always results in an even number so we can skip one step.
+
+#+BEGIN_SRC R :session :tangle problem014.R
+  ## Euler Problem 14: Longest Collatz sequence
+  ## https://projecteuler.net/problem=14
+  library(tidyverse)
+  collatz.chain <- function(n) {
+      chain <- vector()
+      i <- 1
+      while (n != 1) {
+          if (n%%2 == 0)
+              n <- n / 2
+          else
+              n <- 3 * n + 1
+          chain[i] <- n
+          i <- i + 1
+      }
+      return(chain)
+  }
+
+  collatz.length <- vector(length = 1E6)
+  collatz.length[1] <- 0
+  for (n in 2:1E6) {
+      x <- n
+      count <- 0
+      while (x != 1 & x >= n) {
+          if (x %% 2 == 0) {
+              x <- x / 2
+              count <- count + 1
+          }
+          else {
+              x <- (3 * x + 1) / 2
+              count <- count + 2
+          } 
+      }
+      count <- count + collatz.length[x]
+      collatz.length[n] <- count
+  }
+
+  answer <- which.max(collatz.length)
+  print(answer)
+#+END_SRC
+
+#+RESULTS:
+: 837799
+
+** Visualising Collatz Sequences
+The Collatz sequence is an example of a simple mathematical rule that can create an unpredictable pattern. The Online Encyclopedia of Integer Sequences lists the number of steps required to reach 1 in sequence [[https://oeis.org/A006577][A006577]]. This number can only be determined by running the sequence, and there does not seem to be a one-step formula to predict the sequence. The image below visualises the number of steps for the first 1000 positive numbers. The scatterplot shows some unusual patterns. Does this visualisation indicate that the Collatz Sequence does have a pattern after all?
+
+#+BEGIN_SRC R :session :results output graphics:file Images/CollatzPoints.png
+  collatz.length[1:1000] %>%
+      as_data_frame() %>%
+      mutate(n = 1:1000) %>%
+      select(n, Steps = value) %>%
+      ggplot(aes(n, Steps)) +
+      geom_point(col = "dodgerblue4") +
+      ggtitle("Number of steps to reach 1 in the Collatz Sequence")
+  ggsave("Images/problem014.png", dpi = 300)
+#+END_SRC
+
+#+RESULTS:
+: Error in collatz.length[1:1000] %>% as_data_frame() %>% mutate(n = 1:1000) %>%  : 
+:   could not find function "%>%"
+: Error in ggsave("Images/problem014.png", dpi = 300) : 
+:   could not find function "ggsave"
+
+The Collatz sequence can also be visualised using networks. Each step between two numbers is an edge, and the numbers are the vertices. For example, the network for the Collatz sequence for number 10 is 5–16, 16–8, 8–4, 4–2, 2–1. When generating following sequences, the network overlaps, and a tree of sequences appears. The tree below combines the Collatz sequences for the numbers 2 to 26. Number 27 has a very long sequence, making the tree much harder to read.
+
+#+BEGIN_SRC R :session :results outout graphics :file Images/CollatzNetwork.png :tangle problem014.R
+  edgelist <- data.frame(a = 2, b = 1)
+  for (n in 3:26) {
+     chain <- as.character(c(n, collatz.chain(n)))
+     chain <- data.frame(a = chain[-length(chain)], b = chain[-1])
+     edgelist <- rbind(edgelist, chain)
+  }
+  library(igraph)
+  g <- graph.edgelist(as.matrix(edgelist))
+  g <- simplify(g)
+  par(mar = rep(0,4))
+  V(g)$color <- degree(g, mode = "out") + 1
+  plot(g, 
+       layout = layout.kamada.kawai,
+       vertex.color = V(g)$color, 
+       vertex.size = 6,
+       vertex.label.cex = 0.7,
+       vertex.label.color = "black",
+       edge.arrow.size = 0.1,
+       edge.color = "black"
+       )
+#+END_SRC
+
+#+RESULTS:
+[[file:Images/CollatzNetwork.png]]
+
+#+CAPTION: Network of Collatz sequences $n=$2-26.
+
+View the most recent version code on [[https://github.com/pprevos/r.prevos.net/blob/master/ProjectEuler/problem014.R][GitHub]].
+* Euler Problem 10: 
+* Euler Problem 9
+* Euler Problem 8: Largest product in a series
+#+BEGIN_SRC R :tangle problem008.R
+  ## Euler Problem 8: Largest product in a series
+  ## https://projecteuler.net/problem=8
+  library(rvest)
+  digits <- read_html("https://projecteuler.net/problem=8") %>%
+      html_nodes("p") %>%
+      html_text() 
+  digits <- gsub("[^0-9\\.]", "", digits[2])
+
+  ngram <- 13 # Define length
+  answer <- 0
+  ## Clycle through digits
+  for (i in 1:(nchar(digits) - ngram + 1)) {
+      ## Pick 13 consecutive digits
+      adjecent <- substr(digits, i, i + ngram - 1)
+      ## Define product
+      mult <- prod(as.numeric(unlist(strsplit(adjecent, ""))))
+      ## Largest?
+      if (mult > answer) answer <- mult
+  }
+  print(answer)
+#+END_SRC
+
+#+RESULTS:
+: 23514624000
+
+* Euler Problem 7: 10,001st Prime
+** Euler Problem 7 Definition
+By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13. What is the 1,0001st prime number?
+** Solution
+The =is.prime= function determines whether a number is a prime number by checking that it is not divisible by any prime number up to the square root of the number.
+
+The Sieve of used in Euler Problem 3 is reused to generate prime numbers.
+
+This problem can only be solved using brute force because prime gaps (sequence A001223 in the OEIS) do not follow a predictable pattern.
+
+#+BEGIN_SRC R :tangle problem007.R :results output 
+  ## Euler Problem 7: 10,001st Prime
+  ## https://projecteuler.net/problem=7
+
+  source("euler.R")
+  is.prime <- function(n) {
+      primes <- esieve(ceiling(sqrt(n)))
+      prod(n %% primes!=0)==1
+  }
+
+  i <- 2 # First Prime
+  n <- 1 # Start counter
+  while (n < 10001) { # Find 10001 prime numbers
+      i <- i + 1 # Next number
+      if(is.prime(i)) { # Test next number
+          n <- n + 1 # Increment counter
+          i <- i + 1 # Next prime is at least two away
+      }
+  }
+  answer <- i - 1
+  print(answer)
+
+  ## Visualise
+  primes <- esieve(answer)
+  gaps <- primes[2:10001] - primes[1:10000]
+
+  library(tidyverse)
+
+  data_frame(gap = gaps) %>%
+      ggplot(aes(gap)) +
+      geom_histogram(binwidth = 1, fill = "dodgerblue3") +
+      xlab("Prime gap occurence")
+  ggsave("Images/problem007.png", dpi = 300)
+#+END_SRC	
+
+#+RESULTS:
+
+The largest prime gap for the first 10,001 primes is 72. Sexy primes with a gap of 6 are the most common and there are 1270 twin primes.
+
+You can also view this code on GitHub.
+* Euler Problem 6: Euler Problem 6: Sum Square Difference
+** Euler Problem 6 Definition
+The sum of the squares of the first ten natural numbers is:
+
+$1^2 + 2^2 + \ldots + 10^2 = 385$
+
+The square of the sum of the first ten natural numbers is:
+
+$(1 + 2 + \ldots + 10)^2 = 552 = 3025$
+
+The difference between the sum of the squares of the first ten natural numbers and the square of the sum is $3025 - 385 = 2640$. Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+** Solution
+This is a straightforward problem for vector processing capabilities in R.
+
+#+BEGIN_SRC R :tangle problem006.R :results output 
+  ## Euler Problem 6: Sum Square Difference
+  ## https://projecteuler.net/problem=6
+
+  ## Brute force
+  n <- 100
+  answer <- sum(1:n)^2-sum((1:n)^2)
+  print(answer)
+
+  ## Analytical
+  answer <- ((n*(n+1))/2)^2 - (n*(n+1)*(2*n+1))/6
+  print(answer)
+#+END_SRC
+
+#+RESULTS:
+: [1] 25164150
+: [1] 25164150
+
+This problem can also be solved arithmetically. When Carl Friedrich Gauss (1777-1855) when he was a child his teacher challenged his students to add all numbers from 1 to 100. All of his friends struggled to add all the 100 numbers one by one but Carl completed the task in a few seconds.
+
+The same principle applies to computing. The first solution is like Carl's classmates who slavishly add all numbers. This solution is based on arithmetic progressions.
+
+The sum of natural numbers can be expressed as:
+$latex \frac{n(n + 1)}{2} &s=2$
+
+The sum of the squares of the first n natural numbers is:
+$latex \frac{n(n+1)(2n+1)}{6} &s=2$
+
+With these two formulas, a fast solution without having to use loops can be written.
+
+This code on [[https://github.com/pprevos/r.prevos.net/blob/master/ProjectEuler/problem006.R][GitHub]].
+* Euler Problem 5: Smallest Multiple
+Euler Problem 5 relates to the divisibility of numbers.
+** Euler Problem 5
+2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder. What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
+** Solution
+The solution will also be divisible by the number 1 to 10 so we can start at 2520 and increment by 2520. The loop checks whether the number is divisible by the numbers 1 to 20.
+#+BEGIN_SRC R :tangle problem005.R
+## Euler Problem 5: Smallest Multiple
+## https://projecteuler.net/problem=4
+i <- 2520
+while (sum(i %% (1:20)) != 0) {
+    i <- i + 2520
+}
+answer <- i
+print(answer)
+#+END_SRC
+
+#+RESULTS:
+: 232792560
+
+The most recent version of this code is available on [[https://github.com/pprevos/r.prevos.net/blob/master/ProjectEuler/problem005.R][GitHub]].
+
+#+BEGIN_SRC R :tangle problem005.R
+## Analytical solution by David Radcliffe
+## Euclidean algorithm
+gcd = function (x, y) ifelse(x == 0, y, gcd(y %% x, x))
+lcm = function (x, y) x*y/gcd(x,y)
+print(Reduce(lcm, 1:20))
+#+END_SRC
+
+#+RESULTS:
+: 232792560
+
+* Euler Problem 4: Largest Palindromic Product
+** Euler Problem 4 Definition
+A palindromic number reads the same both ways. The largest [[https://en.wikipedia.org/wiki/Palindromic_number][palindrome]] made from the product of two 2-digit numbers is 9009 = 91 × 99. Find the [[https://projecteuler.net/problem=4][largest palindrome]] made from the product of two 3-digit numbers.
+** Solution
+This code searches fo palindromic numbers, starting at the highest values. The palindromes are tested by converting the number to a character string. When the first palindromic number is found, the loop is broken.
+
+Searching a bit further results in twelve palindromic numbers. Sequence A002113 in the OEIS lists palindromes in base 10. Mathematicians used these numbers only for fun, without any purpose in reality. The graph below shows the number of palindromic numbers between 0 and 1 million.
+
+#+BEGIN_SRC R :tangle problem004.R :results output graphics :file Images/problem004.png
+  ## Euler Problem 4: Largest palindrome product
+  ## https://projecteuler.net/problem=4
+  library(tidyverse)
+
+  palindrome <- function(x) {
+      ## Convert to character
+      word <- as.character(x)
+      ## Create reverse
+      reverse <- paste(rev(unlist(strsplit(word, ""))), collapse = "")
+      ## Check whether palindrome
+      return(word == reverse)
+  }
+
+  for (i in 999:900) {
+      for (j in 990:900) {
+          p <- i * j
+          if (palindrome(p)) 
+              break
+      }
+      if (palindrome(p)) {
+          break
+      }
+  }
+  answer <- i * j
+  print(answer)
+
+  ## A002113 Palindromes in base 10
+  p_max <- 1.5E5
+  A002113 <- which(lapply(1:p, palindrome) == TRUE)
+  data_frame(x = 1:p_max,
+             y = sapply(1:p_max, function(p) length(A002113[A002113 < p]))
+             ) %>%
+      ggplot(aes(x, y)) + geom_line() +
+      xlab("n") + ylab("Palindromic numbers <n")
+  ggsave("Images/problem004.png", dpi = 300)
+#+END_SRC	
+
+#+RESULTS:
+[[file:Images/problem004.png]]
+* Euler Problem 3: Largest Prime Factor
+Euler problem 3 is about prime factors, which are some of the most important numbers of the digital economy. RSA encryption is based on the fact that determining the prime factors of huge numbers takes a very long time. So much time in fact that the cost of breaking the encryption outweigh the benefits of obtaining the secret.
+
+[[https://r.prevos.net/tag/primes/][Prime numbers]] are the basic building blocks of the natural numbers as every number, except the primes themselves. Every natural number can be written as the product of a series of primes. The RSA encryption system uses large primes to keep electronic messages away from prying eyes, as explained in the Numberphile video below.
+
+https://www.youtube.com/watch?v=M7kEpw1tn50
+** Euler Problem 3 Definition
+The prime factors of 13195 are 5, 7, 13 and 29. What is the [[https://projecteuler.net/problem=3][largest prime factor of the number 600851475143]]?
+** Generating Prime Numbers
+This solution relies on two functions that can be used for multiple Euler problems. The [[https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes][Sieve of Eratosthenes]] generates prime numbers from 2 to /n/. The code is commented to explain the sieve and the image shows how numbers from 1 to 100 are sieved to find the primes.
+
+https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#/media/File:Sieve_of_Eratosthenes_animation.gif
+#+caption: Sieve of Eratosthenes.
+
+The =prime.factors= function generates the list of unique prime divisors and then generates the factors. The factors are identified by dividing the number by the candidate prime factors until the result is 1.
+
+The solution can also be found by using the =primeFactors= function in the [[https://cran.r-project.org/web/packages/numbers/index.html][numbers]] package, which provides a range of functions related to prime numbers and is much faster than the basic code provided above.
+
+The most recent version of this code is available on [[https://github.com/pprevos/r.prevos.net/blob/master/ProjectEuler/problem003.R][GitHub]].
+
+#+BEGIN_SRC R :results output :tangle problem003.R
+  ## Euler Problem 3: Largest prime factor
+  ## https://r.prevos.net/euler-problem-3/
+  esieve <- function(n) {
+      if (n == 1) return(NULL)
+      if (n == 2) return(n)
+      ## Create a list of consecutive integers {2,3,…,N}.
+      l <- 2:n
+      ## Start counter
+      i <- 1
+      ## Select p as the first prime number in the list, p=2.
+      p <- 2
+      while (p^2<=n) {
+          ## Remove all multiples of p from the l.
+          l <- l[l == p | l %% p!= 0]
+          ## set p equal to the next integer in l which has not been removed.
+          i <- i + 1
+          ## Repeat steps 3 and 4 until p2 > n,
+          ## all the remaining numbers in the list are primes
+          p <- l[i]
+      }
+      return(l)
+  }
+
+  prime.factors <- function (n) {
+      ## Define list of factors
+      factors <- c()
+      ## Define primes to be tested
+      primes <- esieve(floor(sqrt(n)))
+      ## Idenitfy prime divisors
+      d <- which(n %% primes == 0) 
+      ## No prime divisors
+      if (length(d) == 0) 
+          return(n)
+      ## Test candidate primes
+      for (q in primes[d]) {
+          ## Generate list of factors
+          while (n %% q == 0) {
+              factors <- c(factors, q)
+              n <- n/q } }
+      if (n > 1) factors <- c(factors, n)
+      return(factors)
+  }
+
+  max(prime.factors(600851475143))
+
+  ## Using number package
+  library(numbers)
+  max(primeFactors(600851475143))
+#+END_SRC
+
+#+RESULTS:
+: [1] 6857
+: [1] 6857
+
+
+-------------------------------------------------------------------------------
+* Euler Problem 2: Even Fibonacci Numbers
+The second Project Euler problem looks at the Fibonacci numbers. These numbers describe many natural processes and can also be used to create magic tricks. The [[https://en.wikipedia.org/wiki/Missing_square_puzzle][Missing Square Puzzle]] is based on this principle.
+https://upload.wikimedia.org/wikipedia/commons/8/8c/Missing_Square_Animation.gif
+** Euler Problem 2 Definition
+Each new term in the Fibonacci sequence is generated by adding the previous two terms. By starting with 1 and 2, the first 10 terms will be:
+
+1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...
+
+By considering the terms in the [[https://projecteuler.net/problem=2][Fibonacci sequence whose values do not exceed four million]], find the sum of the even-valued terms.
+** Solutions
+The code generates [[https://en.wikipedia.org/wiki/Fibonacci_number][Fibonacci numbers]] until it reaches the value of four million. The code then sums the even numbers in the sequence.
+
+#+BEGIN_SRC R :tangle problem002.R
+  ## Euler Problem 2: Even Fibonacci numbers
+  ## https://r.prevos.net/euler-problem-2/
+  fib <- c(1, 2)  #Define first two numbers
+  while (max(fib) < 4E+06) {
+      # Generate Fibonacci numbers until limit is reached
+      len <- length(fib)
+      fib <- c(fib, fib[len - 1] + fib[len])
+  }
+  answer <- sum(fib[fib %% 2 == 0])
+  print(answer)
+#+END_SRC
+
+#+RESULTS:
+: 4613732
+
+A series of R packages exist to generate Fibonacci numbers. The [[https://cran.r-project.org/web/packages/gmp/index.html][GMP package]] for Multiple Precision Arithmetic provides a function to calculate the n^th Fibonacci number. This package is also able to work with huge numbers. Using this package is much faster than the base R code used above.
+
+#+BEGIN_SRC R :tangle problem002.R :results output
+  ## GNU Multiple Precision Arithmetic Library
+  library(gmp)
+  i <- 1
+  answer <- 0
+  fib <- fibnum(i)
+  while (fib <= 4E6) {
+      if (fib %% 2 == 0) {
+          answer <- answer + fib
+          }
+      i <- i + 1
+      fib <- fibnum(i)
+      }
+  print(answer)
+#+END_SRC
+
+#+RESULTS:
+: Big Integer ('bigz') :
+: [1] 4613732
+
+This most recent version of this code is available on [[https://github.com/pprevos/r.prevos.net/blob/master/ProjectEuler/problem002.R][GitHub]].
+* Euler Problem 1: Multiples of 3 or 5
+I have started solving Project Euler problems in R to sharpen my skills in coding and mathematics. This first problem is trivial, but it shows some of the different methods that R can deploy to solve the same problem.
+** Euler Problem 1 Definition
+If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23. Find the [[https://projecteuler.net/problem=1][sum of all the multiples of 3 or 5 below 1000]].
+** Solutions
+By the way, the problem definition on the Project Euler website is not consistent: the title mentions multiples of 3 AND 5, while the description asks for multiples of 3 OR 5.
+
+There are four ways to solve this problem in R:
+1. Loop through all numbers from 1 to 999 and test whether they are divisible by 3 or by 5 using the [[https://stat.ethz.ch/R-manual/R-devel/library/base/html/Arithmetic.html][modulus function]].
+2. Using [[http://www.r-tutor.com/r-introduction/vector/vector-arithmetics][Vector arithmetic]].
+3. Define [[https://stat.ethz.ch/R-manual/R-devel/library/base/html/seq.html][sequences]] of 3 and 5 and exclude duplicates (numbers divisible by 15).
+4. Analytical approach.
+
+The three brute-force solutions are swift because of the low number of steps to find a solution. An analytical solution significantly reduces the processing time as it only requires one step.
+
+The problem involves [[https://en.wikipedia.org/wiki/Arithmetic_progression][arithmetic progressions]], which are sequences of numbers with a constant difference. The sequence 1, 4, 7, 10, 13, ... is an arithmetic progression with a common difference of three. 
+
+The sum of an arithmetic progression, where $n$ is the number of elements and $a_1$ and $a_n$ are the lowest and highest value, is:
+
+$\mathrm{sum}= \frac{n(a_{1} + a_n)}{2}$
+
+The numbers divisible by $n=3$ can be expressed as:
+
+$\mathrm{sum}_3(999)=3+6+9+12+ \ldots + 999 = 3(1+2+3+4+ \ldots + 333)$
+
+We can now calculate the sum of all divisors by combining the above progression with the formula for arithmetic progressions as expressed in the above code, where $m$ is the divisor and $n$ the extent of the sequence. $p$ is the highest number less than $n$ divisible by $m$. In the case of 5, this number is 995.
+
+$p = n \lfloor (m/n) \rfloor$
+
+Substitution gives:
+
+$\mathrm{sum}_m(n) =  p \frac{1+(p/m)}{2}$
+
+The latest version of this code is available on [[https://github.com/pprevos/r.prevos.net/blob/master/ProjectEuler/problem001.R][GitHub]].
+
+#+BEGIN_SRC R :tangle problem001.R :results output
+  ## Euler Problem : Multiples of 3 and 5
+  ## https://r.prevos.net/euler-problem-1/
+
+  ## Solution 1
+  answer <- 0
+  for (i in 1:999) {
+      if (i %% 3 == 0 | i %% 5 == 0) 
+          answer <- answer + i
+  }
+  print(answer)
+
+  ## Solution 2
+  sum((1:999)[((1:999) %% 3 == 0) | ((1:999) %% 5 == 0)])
+
+  ## Solution 3
+  sum(unique(c(seq(3, 999, 3), seq(5, 999, 5))))
+
+  ## Solution 4
+  SumDivBy <- function(m, n) {
+      p <- floor(n / m) * m # Round to multiple of n
+      return (p * (1 + (p / m)) / 2)
+  }
+  SumDivBy(3, 999) + SumDivBy(5, 999) - SumDivBy(15, 999)
+#+END_SRC
+
