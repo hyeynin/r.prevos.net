@@ -1,25 +1,23 @@
-# Flightpath map
-# https://r.prevos.net/create-air-travel-route-maps/
+## Flightpath map
+## https://r.prevos.net/create-air-travel-route-maps/
 
-# Init
+## Init
 library(tidyverse)
 library(ggmap)
 library(ggrepel)
 
-# Read flight and airports lists 
+## Read flight and airports lists 
 flights <- read_csv("Geography/flights.csv")
-
 airports_file <- "Geography/airports.csv"
-
 if (file.exists(airports_file)) {
   airports <- read_csv(airports_file)
   } else {
   airports <- data_frame(airport = NA, lon = NA, lat= NA)
 }
 
-# Lookup coordinates
-# Some airports need counry names to ensure Google finds the correct location
-# The geocoding keeps looping till all coordinates have been found
+## Lookup coordinates
+## Some airports need counry names to ensure Google finds the correct location
+## The geocoding keeps looping till all coordinates have been found
 destinations <- unique(c(flights$From, flights$To))
 new_destinations <- destinations[!destinations %in% airports$airport]
 while (length(new_destinations) > 0) {
@@ -32,7 +30,7 @@ while (length(new_destinations) > 0) {
 }
 write_csv(airports, "Geography/airports.csv")
 
-# Remove return flights
+## Remove return flights
 d <- vector()
 for (i in 1:nrow(flights)) {
     d <- which(paste(flights$From, flights$To) %in% paste(flights$To[i], flights$From[i]))
@@ -42,14 +40,14 @@ flights <- flights %>%
   filter(From != "R") %>%
   select(From, To)
 
-# Add coordinates to flight list
+## Add coordinates to flight list
 flights <- merge(flights, airports, by.x="From", by.y="airport")
 flights <- merge(flights, airports, by.x="To", by.y="airport")
 flights <- flights %>% 
   select(From, To, lon.x, lat.x, lon.y, lat.y) %>% 
   as_data_frame()
 
-# Split Circumnaviation Flights at -180/180 degrees
+## Split Circumnaviation Flights at -180/180 degrees
 circ <- which(abs(flights$lon.y - flights$lon.x) > 180)
 flights[circ,]
 flights$lon.y[circ] <- ifelse(flights$lon.y[circ] < 0, 180, -180)
@@ -61,26 +59,18 @@ leg2 <- airports %>%
   select(From, To = airport, lon.x, lat.x, lon.y = lon, lat.y = lat)
 flights <- rbind(flights, leg2)
 
-# Remove country names
+## Remove country names
 airports$airport <- as.character(airports$airport)
 comma <- regexpr(",", airports$airport)
 airports$airport[which(comma > 0)] <- substr(airports$airport[which(comma > 0)], 1, comma[comma > 0] - 1)
 
-# Plot flight routes
-worldmap <- borders("world", colour="#efede1", fill="#efede1") # create a layer of borders
+## Plot flight routes
+worldmap <- borders("world", colour="#efede1", fill="#efede1") 
 ggplot() + worldmap + 
     geom_point(data=airports, aes(x = lon, y = lat), col = "#970027") + 
     geom_text_repel(data=airports, aes(x = lon, y = lat, label = airport), col = "black", size = 2, segment.color = NA) + 
     geom_curve(data = flights, aes(x = lon.x, y = lat.x, xend = lon.y, yend = lat.y), col = "#b29e7d", size = .4) + 
-    theme(panel.background = element_rect(fill="white"), 
-          axis.line = element_blank(),
-          axis.text.x = element_blank(),
-          axis.text.y = element_blank(),
-          axis.ticks = element_blank(),
-          axis.title.x = element_blank(),
-          axis.title.y = element_blank()
-    )
-
+    theme_void()
 ggsave("Geography/flights_map.png", dpi = 300)
 
 

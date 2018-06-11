@@ -41,11 +41,34 @@ $$H_2: R_{ideal,age} >0$$
   body$Date <- as.Date(body$Date)
   body$Current_Ideal <- body$Current - body$Ideal
 #+END_SRC
+
 The participants of the survey are unsolicited visitors to the Monash University website. Most participants were students undertaking the psychology course. No socioeconomic information is available. The survey data contains src_R[:session R :results latex]{nrow(body)} surveys completed between src_R[:session R :results latex]{format(min(body$Date), "%e %B %Y")} and src_R[:session R :results latex]{format(max(body$Date), "%e %B %Y")}, of which src_R[:session R :results latex]{nrow(subset(body, Gender=="Male"))} male and src_R[:session R :results latex]{nrow(subset(body, Gender=="Female"))} female. Fourteen surveys were only partially completed and were not considered in the analysis. Table \ref{gender-age} shows the age distribution over the full data set. The cohorts taken into account for this survey are men and women between 16 and 30 years of age. 
+
 #+BEGIN_SRC R :results output latex :session R :exports results
 respondents <- addmargins(table(body$Gender, body$Cohort))
 xtable(respondents, caption = "Age profile of survey participants", label = "gender-age", digits = 0)
 #+END_SRC
+
+#+RESULTS:
+#+BEGIN_EXPORT latex
+% latex table generated in R 3.4.4 by xtable 1.8-2 package
+% Sat Jun  2 09:54:24 2018
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrr}
+  \hline
+ & $<$ 16 & 16--30 & 31--50 & $>$ 50 & Sum \\ 
+  \hline
+Female & 1 & 56 & 46 & 4 & 107 \\ 
+  Male & 0 & 29 & 24 & 6 & 59 \\ 
+  Sum & 1 & 85 & 70 & 10 & 166 \\ 
+   \hline
+\end{tabular}
+\caption{Age profile of survey participants} 
+\label{gender-age}
+\end{table}
+#+END_EXPORT
+
 ** Materials
 The questionnaire consisted of seven questions regarding body shape and a further five questions regarding age, gender and possible concerns regarding body shape and dieting. Question 1 (current body shape), 2 (ideal body shape) and question 6 (body shape of the other gender found most attractive) and the questions about gender and age of the on-line questionnaire were used for analysis. The remaining survey results have not been considered.
 
@@ -55,6 +78,7 @@ Participants were asked to compare a set of nine drawings, showing an increasing
 [[file:BodyScale.png]]
 
 The independent variables for this experiment are the gender and age of the participants. The dependent variables under consideration are the perceived current body shape ($current$), the ideal body shape ($ideal$) and the body shape of the other gender found most attractive ($other$). 
+
 #+BEGIN_SRC R :session R :exports none
 sample <- subset(body, Cohort == "16--30")
 s <- min(table(sample$Gender))
@@ -62,10 +86,12 @@ set.seed(1969)
 sample <- rbind(subset(sample, Gender == "Female")[sample(1:s, s),], 
                 subset(sample, Gender == "Male")[sample(1:s, s),])
 #+END_SRC
+
 Of the 16--30 cohort, src_R[:session R :results latex]{length(sample$Gender[sample$Gender=="Male"])} results were submitted by men and src_R[:session R :results latex]{length(sample$Gender[sample$Gender=="Female"])} by women. A random sample of src_R[:session R :results latex]{s} of the results provided by women and all responses submitted by men in this cohort were considered to ensure symmetry in the data. The complete data set was used to determine the correlations between age and ideal female figures for both men and women.
 * Results
 ** Body Image
 The arithmetic mean and standard deviation of the three questions under consideration are summarised in Table ref:results. The results have not been tested for statistical significance. The results show that for women, the average current figure is larger than the average ideal, while for men the perceived current body shape is much closer to the ideal. The percentage of women that considered their current body shape larger than the ideal ($current-ideal>0$) is src_R[:session R :results latex]{round(sum(sample$Current_Ideal>0 & sample$Gender=="Female")/nrow(subset(sample, Gender=="Female"))*100,1)}, while only src_R[:session R :results latex]{round(sum(sample$Current_Ideal>0 & sample$Gender=="Male")/nrow(subset(sample, Gender=="Male"))*100,1)} of men thought that their current body shape was larger than their ideal.
+
 #+BEGIN_SRC R :results output latex :session R :exports results
 current <- tapply(sample$Current, sample$Gender, 
                   function(x) paste0(round(mean(x), 2), "(", round(sd(x), 2), ")"))
@@ -83,6 +109,26 @@ table2 <- xtable(bodyimage, caption = "Mean and standard deviation of body image
 names(table2) <- c("$n$", "$Current$", "$Ideal$", "$Current-Ideal$")
 print(table2 ,sanitize.text.function=function(x){x})
 #+END_SRC
+
+#+RESULTS:
+#+BEGIN_EXPORT latex
+% latex table generated in R 3.4.4 by xtable 1.8-2 package
+% Sat Jun  2 09:54:51 2018
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrlll}
+  \hline
+ & $n$ & $Current$ & $Ideal$ & $Current-Ideal$ \\ 
+  \hline
+F &  29 & 3.93(1.19) & 3.03(0.94) & 0.9(0.86) \\ 
+  M &  29 & 4.14(1.55) & 4.03(0.73) & 0.1(1.37) \\ 
+   \hline
+\end{tabular}
+\caption{Mean and standard deviation of body image} 
+\label{results}
+\end{table}
+#+END_EXPORT
+
 ** Attractiveness
 The results also show that the ideal body shape for women increases as the age of the participant's increases, with a mild positive correlation between ideal body shape and age ($r=$ src_R[:session R :results latex]{round(with(subset(body, Gender=="Female"), cor(Other, Age)), 2)}). The female body shape that men find most attractive also changes slightly as age increases ($r=$ src_R[:session R :results latex]{round(with(subset(body, Gender=="Male"), cor(Other, Age)), 2)}). The ideal female body shape found attractive by men is slightly larger than the female ideal for the cohorts between 16 and 50 years of age, but significantly lower for the group older than 51 (Figure ref:other).
 
@@ -96,6 +142,10 @@ ggplot(other, aes(x = Cohort, y = Other)) + geom_col() +
   facet_wrap(~Gender) + 
   theme_bw(base_size=20)
 #+END_SRC
+
+#+RESULTS:
+[[file:attractiveness.pdf]]
+
 #+CAPTION: Attractiveness of the other gender for females and males. label:other
 * Discussion
 ** Body Dissatisfaction
