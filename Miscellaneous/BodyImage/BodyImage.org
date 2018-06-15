@@ -11,8 +11,6 @@
 #+LATEX_HEADER: \rightheader{Third Hemisphere Publishing}
 #+LATEX_HEADER: \authornote{This paper was prepared for the \emph{Psychology 1A} course of Monash University, Melbourne.}
 * Introduction
-citeA:turner_influence_1997
-
 The most important indication of beauty for women in Western societies is the prevailing ideal of thinness. This ideal causes many women to desire an unrealistically thin body image cite:lamb_body_1993. The preoccupation with thinness is a recent cultural development as the perception of female body shapes has changed significantly over the past decades. In the early 1940's it was found that others perceived people with thin ectomorph bodies as nervous, submissive and socially withdrawn. By the late 1980's this perception had changed, and thin people were considered to be the most sexually appealing cite:turner_influence_1997.
 
 Several researchers have found that the female body depicted in the media has become increasingly thin. Using /Playboy/ models as a proxy for what is perceived as beautiful, bust and hip measurements of centrefold models show that between 1960 and 1979 there was a trend towards non-curvaceousness of women. This trend was, however, reversed in the early 1990s, as visualised in Figure ref:playboy cite:garner_cultural_1980,turner_influence_1997,sypeck_cultural_2006,wiseman_cultural_1992.
