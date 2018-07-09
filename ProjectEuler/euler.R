@@ -86,7 +86,7 @@ big.add <- function(a, b) {
     if (nchar(a)<nchar(b)) 
         a <- paste0(paste(rep(0, nchar(b)-nchar(a)), collapse=""), a)
     if (nchar(a)>nchar(b)) 
-        b <- paste0(paste(rep(0, nchar(a)-nchar(b)), collapse=""), b)
+        b <- paste0(paste(rep(0, nchar(a) - nchar(b)), collapse = ""), b)
     solution <- vector()
     remainder <- 0
     for (i in nchar(b):1) {
@@ -95,7 +95,7 @@ big.add <- function(a, b) {
         r <- p + q + remainder
         if (r >= 10 & i!=1) {
             solution <- c(solution, r %% 10)
-            remainder <- (r - (r %% 10))/10
+            remainder <- (r - (r %% 10)) / 10
         } else {
             solution <- c(solution, r)
             remainder <- 0
@@ -111,8 +111,8 @@ big.mult <- function(a, b) {
 
 # Convert decimal to binary
 binary <- function(x) {
-    if (all(x<2)) x 
-    else paste(binary(x%/%2), x%%2, sep="") 
+    if (all(x < 2)) x 
+    else paste(binary(x %/% 2), x %% 2, sep = "") 
 }
 
 

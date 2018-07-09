@@ -1,12 +1,11 @@
 ## Euler Problem 7: 10,001st Prime
-## https://projecteuler.net/problem=7
-# #https://r.prevos.net/euler-problem-7/
+## https://lucidmanager.org/euler-problem-7/
 
 source("euler.R") ## Project Euler functions
 
 is.prime <- function(n) {
     primes <- esieve(ceiling(sqrt(n)))
-    prod(n %% primes!=0)==1
+    prod(n %% primes != 0) == 1
 }
 
 i <- 2 # First Prime
@@ -21,14 +20,23 @@ while (n < 10001) { # Find 10001 prime numbers
 answer <- i - 1
 print(answer)
 
-## Visualise
-primes <- esieve(answer)
-gaps <- primes[2:10001] - primes[1:10000]
-
+## Visualise prime gaps
 library(tidyverse)
+primes <- esieve(i)
+p <- length(primes)
+gaps <- data_frame(Gap = primes[2:p] - primes[1:(p - 1)],
+                   Sexy = Gap %% 6 == 0) %>%
+    group_by(Gap, Sexy) %>%
+    count()
 
-data_frame(gap = gaps) %>%
-    ggplot(aes(gap)) +
-    geom_histogram(binwidth = 1, fill = "dodgerblue3") +
-    xlab("Prime gap occurence")
+ggplot(gaps, aes(Gap, n, fill = Sexy)) +
+    geom_col() +
+    scale_fill_manual(values = c( "#7391AB", "#A62102")) +
+    labs(title = "Frequency of prime gaps for the first 10,000 primes",
+         x = "Prime Gap",
+         y = "Frequency") 
+guide_legend(title = "Sexy Prime")
+
 ggsave("Images/problem007.png", dpi = 300)
+
+

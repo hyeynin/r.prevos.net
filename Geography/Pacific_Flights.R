@@ -31,21 +31,21 @@ while (length(new_airports) != 0) {
 
 write_csv(airports, f)
 
-# Add coordinates to flight list
+## Add coordinates to flight list
 flights <- merge(flights, airports, by.x="From", by.y="airport")
 flights <- merge(flights, airports, by.x="To", by.y="airport")
 
-# Remove country names
+## Remove country names
 airports$airport <- as.character(airports$airport)
 comma <- regexpr(",", airports$airport)
 airports$airport[which(comma > 0)] <- substr(airports$airport[which(comma > 0)], 1, comma[comma > 0] - 1)
 
-# Pacific centric
+## Pacific centric
 flights$lon.x[flights$lon.x < 0] <- flights$lon.x[flights$lon.x < 0] + 360
 flights$lon.y[flights$lon.y < 0] <- flights$lon.y[flights$lon.y < 0] + 360
 airports$lon[airports$lon < 0] <- airports$lon[airports$lon < 0] + 360
 
-# Plot flight routes
+## Plot flight routes
 worldmap <- borders("world2", fill = "grey") # create a layer of borders
 ggplot() + worldmap + 
     geom_point(data=airports, aes(x = lon, y = lat), col = "#970027") + 
@@ -56,7 +56,7 @@ ggplot() + worldmap +
 
 ggsave("pacifc_flights.png", dpi = 300)
 
-# Network Analysis
+## Network Analysis
 library(igraph)
 g <- graph_from_edgelist(as.matrix(flights[,1:2]), directed = FALSE)
 par(mar = rep(0, 4))

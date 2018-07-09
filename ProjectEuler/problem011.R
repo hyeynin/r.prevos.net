@@ -1,11 +1,11 @@
 ## Problem 11: Largest product in a grid
 ## https://projecteuler.net/problem=11
-## https://r.prevos.net/euler-problem-11/
+## https://lucidmanager.org/euler-problem-11/
 
 ## Read and convert data
 square <- readLines("Data/p011_matrix.txt")
 square <- as.numeric(unlist(lapply(square, function(x){strsplit(x, " ")})))
-square <- matrix(square, ncol=20)
+square <- matrix(square, ncol = 20)
 
 ## Define products
 prod.vert <- square[1:17, ] * square[2:18, ] * square[3:19, ] * square[4:20, ]

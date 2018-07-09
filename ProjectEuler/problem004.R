@@ -1,6 +1,6 @@
 ## Euler Problem 4: Largest palindrome product
 ## https://projecteuler.net/problem=4
-## https://r.prevos.net/euler-problem-4/
+## https://lucidmanager.org/euler-problem-4/
 
 library(tidyverse)
 
@@ -29,9 +29,14 @@ print(answer)
 ## A002113 Palindromes in base 10
 p_max <- 1.5E5
 A002113 <- which(lapply(1:p, palindrome) == TRUE)
-data_frame(x = 1:p_max,
-           y = sapply(1:p_max, function(p) length(A002113[A002113 < p]))
-           ) %>%
-    ggplot(aes(x, y)) + geom_line() +
-    xlab("n") + ylab("Palindromic numbers <n")
-ggsave("Images/problem004.png", dpi = 300)
+
+data_frame(n = 1:p_max,
+           p = sapply(1:p_max, function(p) length(A002113[A002113 < p]))) %>%
+    ggplot(aes(n, p)) +
+    geom_line(col = "#f26230", size = 1) +
+    ylab("Palindromic numbers <n") +
+    theme_light(base_size = 16)
+
+ggsave("Images/problem004.png", dpi = 300, width = 8, height = 6)
+
+

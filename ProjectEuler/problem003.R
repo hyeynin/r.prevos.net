@@ -1,6 +1,6 @@
 ## Euler Problem 3: Largest prime factor
 ## https://projecteuler.net/problem=3
-## https://r.prevos.net/euler-problem-3/
+## https://lucidmanager.org/euler-problem-3/
 
 esieve <- function(n) {
     if (n == 1) return(NULL)
