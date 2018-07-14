@@ -4,6 +4,7 @@ library(tidytext)
 library(wordcloud)
 library(RColorBrewer)
 library(topicmodels)
+lm_palette <- c("#f26230", "#865596", "#3b2758", "#262e43", "#005395", "#008da1")
 
 ## Rip definitions from website
 definitions <- read_html("https://heidicohen.com/marketing-definition/") %>%
@@ -27,13 +28,13 @@ word_freq <- def_words %>%
 pdf("marketingcloud.pdf")
 word_freq %>%
     with(wordcloud(word, n, max.words = 50, rot.per = .5,
-                   colors = rev(brewer.pal(5, "Dark2"))))
+                   colors = lm_palette))
 dev.off()
 
 word_freq %>%
     top_n(10) %>%
     mutate(word = reorder(word, n)) %>%
-    ggplot(aes(word, n)) + geom_col(fill = "dodgerblue4") +
+    ggplot(aes(word, n)) + geom_col(fill = lm_palette[2]) +
     coord_flip() +
     theme(text = element_text(size=20))
 ggsave("marketingtop10words.png", dpi = 300)
@@ -53,8 +54,9 @@ marketing_lda <- LDA(marketing_dtm, k = 4) %>%
 marketing_lda %>%
     mutate(term = reorder(term, beta)) %>%
     ggplot(aes(term, beta, fill = factor(topic))) +
-       geom_col(show.legend = FALSE) +
+    geom_col(show.legend = FALSE) +
+    scale_fill_manual(values = lm_palette[-1:-2]) + 
        facet_wrap(~topic, scales = "free") +
        coord_flip() +
-       theme(text = element_text(size=20))
+       theme(text = element_text(size = 20))
 ggsave("MarketingTopics.png", dpi = 300)
