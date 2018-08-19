@@ -1,26 +1,11 @@
-;; Minimal init file to develop R code in Emacs
-(package-initialize)
-
-;; Package archives
- '(package-archives
-   (quote
-    (("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa" . "https://melpa.org/packages/")
-     ("org" . "http://orgmode.org/elpa/"))))
-
-;;ESS - Emacs Speaks Statistics
 (require 'ess-site)
+(require 'ess-smart-underscore)
+
+;; Active the R language in Babel
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((R . t)
-   (latex . t)))
-(setq org-confirm-babel-evaluate nil)
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
-  (add-hook 'org-mode-hook 'org-display-inline-images)   
-;; Line numbers
-(add-hook 'ess-mode-hook 'linum-mode)
-;; Redefine asign key
-(require 'ess-smart-underscore)
+ '((R . t)))
+
 ;; Auto complete
 (require 'auto-complete-config)
 (ac-config-default)
