@@ -4,7 +4,7 @@ library(tidytext)
 library(wordcloud)
 library(RColorBrewer)
 library(topicmodels)
-lm_palette <- c("#f26230", "#865596", "#3b2758", "#262e43", "#005395", "#008da1")
+lm_palette <- c("#f7881f", "#55ace1",  "#5f6c36")
 
 ## Rip definitions from website
 definitions <- read_html("https://heidicohen.com/marketing-definition/") %>%
@@ -23,12 +23,12 @@ def_words <- definitions[1:72, ] %>%
 word_freq <- def_words %>%
     anti_join(stop_words) %>%
     count(word) %>%
-    filter(word != "marketing")
+    filter(!(word %in% c("marketing", "vice", "president", "executive")))
 
 pdf("marketingcloud.pdf")
 word_freq %>%
     with(wordcloud(word, n, max.words = 50, rot.per = .5,
-                   colors = lm_palette))
+                   colors = rev(lm_palette)))
 dev.off()
 
 word_freq %>%

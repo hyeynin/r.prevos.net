@@ -1,6 +1,6 @@
 # The Devil is in the Data
 
-This repository holds the R-code related to the [The Devil is in the Data](http://r.prevos.net), a blog about data science in the R language for statistical computing.
+This repository holds the R-code related to the [The Devil is in the Data](https://lucidmanager.org/the-devil-is-in-the-data/), a blog about data science in the R language for statistical computing.
 
 This blog covers a diverse range of topics:
 
