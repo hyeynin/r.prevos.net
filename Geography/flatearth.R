@@ -1,4 +1,3 @@
-## Trip around the world
 ## Flat Earth mathematics
 ## https://lucidmanager.org/flat-earth-mathematics/
 
