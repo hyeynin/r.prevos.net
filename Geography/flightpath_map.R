@@ -67,7 +67,7 @@ airports$airport[which(comma > 0)] <- substr(airports$airport[which(comma > 0)],
 ## Plot flight routes
 worldmap <- borders("world", colour="#efede1", fill="#efede1") 
 ggplot() + worldmap + 
-    geom_point(data=airports, aes(x = lon, y = lat), col = "#970027") + 
+    geom_point(data = airports, aes(x = lon, y = lat), col = "#970027") + 
     geom_text_repel(data=airports, aes(x = lon, y = lat, label = airport), col = "black", size = 2, segment.color = NA) + 
     geom_curve(data = flights, aes(x = lon.x, y = lat.x, xend = lon.y, yend = lat.y), col = "#b29e7d", size = .4) + 
     theme_void()

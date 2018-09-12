@@ -17,12 +17,10 @@ ggsave("azequidistant.png", dpi = 150)
 ## Define itinerary
 library(ggmap)
 airports <- tibble(city = c("Melbourne", "Tokyo", "Amsterdam", "San Francisco", "Melbourne"))
-
 ## Find coordinates
 ## Where you receive an OVER_QUERY_LIMIT error, repeat the code
 itinerary <- geocode(airports$city) %>%
     mutate(location = airports$city)
-
 ## Split travel past dateline
 dl <- which(diff(itinerary$lon) > 180)
 dr <- ifelse(itinerary$lon[dl] < 0, -180, 180)
@@ -37,13 +35,8 @@ itinerary
 worldmap +
     geom_point(data = itinerary, aes(lon, lat), colour = "red", size = 4) +
     geom_path(data = itinerary, aes(lon, lat), colour = "red", size = 1) +
-    coord_map("azequidistant", orientation = c(-90, 0, 270))
+    coord_map("azequidistant", orientation = c(90, 0, 270))
 ggsave("rtw.png", dpi = 150)
-
-worldmap +
-    geom_point(data = itinerary, aes(lon, lat), colour = "red", size = 4) +
-    geom_path(data = itinerary, aes(lon, lat), colour = "red", size = 1) +
-    coord_map(project="albers", par=c(39, 45))
 
 ## Great Circle Distance
 library(geosphere)
@@ -53,10 +46,31 @@ sapply(1:(nrow(itinerary) - 1), function(l)
 
 ## Flat Eart Mathematics
 library(mapproj)
+flatearth.coords <- mapproject(world$long, world$lat,
+                        "azequidistant", orientation = c(90, 0, 270))
+r <- 6378.137
+flatearth <- mutate(world,
+                x = flatearth.coords$x * r,
+                y = flatearth.coords$y * r) %>%
+    select(x, y, group, order, region, subregion)
+
+## Australia - South America
+airports <- tibble(city = c("Sydney", "Santiago de Chili"))
+itinerary <- geocode(airports$city) %>%
+    mutate(location = airports$city)
+itinerary
+
 coords <- mapproject(itinerary$lon, itinerary$lat, "azequidistant",
-                     orientation = c(-90, 0, 270))
-coords <- tibble(x = coords$x, y = coords$y)
-sum(sqrt(diff(coords$x)^2 + diff(coords$y)^2) * 6378.137)
+                     orientation = c(90, 0, 270))
+coords <- tibble(x = coords$x * r, y = coords$y * r)
+sum(sqrt(diff(coords$x)^2 + diff(coords$y)^2))
 
-
+ggplot(world) +
+    geom_path(aes(x, y, group = group)) +
+    theme(axis.text = element_blank(),
+          axis.ticks = element_blank()) +
+    labs(x = "", y = "") + 
+    geom_point(data = coords, aes(x, y), colour = "red", size = 4) +
+    geom_path(data = coords, aes(x, y), colour = "red", size = 1)
+ggsave("flatearth.png", dpi = 150)
 

@@ -3,15 +3,13 @@ library(tidyverse)
 library(RQDA)
 library(tm)
 library(wordcloud)
-library(topicmodels)
 library(igraph)
 
-# Word cloud
-openProject("Hydroinformatics/Macromarketing/stakeholders.rqda")
-interviews <- RQDAQuery("SELECT file FROM source")
-interviews$file <- apply(interviews, 1, function(x) gsub("…", "...", x))
-interviews$file <- apply(interviews, 1, function(x) gsub("’", "", x))
+openProject("stakeholders.rqda")
+interviews <- data.frame(name = RQDAQuery("SELECT name FROM source"),
+                         text = RQDAQuery("SELECT file FROM source"))
 interviews <- Corpus(VectorSource(interviews$file))
+
 interviews <-  tm_map(interviews, stripWhitespace)
 interviews <-  tm_map(interviews, content_transformer(tolower))
 interviews <-  tm_map(interviews, removeWords, stopwords("english"))
@@ -19,7 +17,8 @@ interviews <-  tm_map(interviews, removePunctuation)
 interviews <-  tm_map(interviews, removeNumbers)
 interviews <-  tm_map(interviews, removeWords, c("interviewer", "interviewee"))
 
-pdf("Hydroinformatics/Macromarketing/wordcloud.pdf")
+# Word cloud
+pdf("wordcloud.pdf")
 set.seed(1969)
 wordcloud(interviews, min.freq = 10, max.words = 50, rot.per=0.35, 
           colors = brewer.pal(8, "Blues")[-1:-5])
@@ -30,8 +29,6 @@ dtm <- DocumentTermMatrix(interviews)
 dtm <- removeSparseTerms(dtm, 0.99)
 ldaOut <-LDA(dtm, k = 4)
 terms(ldaOut,6)
-
-
 
 #Load and transform data
 codings <- getCodingTable()[,4:5]
@@ -49,20 +46,17 @@ ggplot(codings, aes(reorder_size(codename), fill=category)) + geom_bar(stat="cou
     facet_grid(~filename) + coord_flip() + 
     theme(legend.position="bottom", legend.title=element_blank()) + 
     ylab("Code frequency in interviews") + xlab("Code")
-ggsave("Hydroinformatics/Macromarketing/rqda_codes.png", width=9, height=11, dpi = 300)
-
-
+ggsave("rqda_codes.png", width=9, height=11, dpi = 300)
 
 # Axial coding
-edges <- RQDAQuery("SELECT codecat.name, freecode.name FROM codecat, freecode, treecode 
-          WHERE codecat.catid=treecode.catid AND freecode.id=treecode.cid")
+edges <- RQDAQuery("SELECT codecat.name, freecode.name FROM codecat, freecode, treecode WHERE codecat.catid=treecode.catid AND freecode.id=treecode.cid")
 
 g <- graph_from_edgelist(as.matrix(edges), directed = FALSE) %>%
   simplify()
 V(g)$name <- gsub(" ", "\n", V(g)$name)
 
 c <- spinglass.community(g)
-pdf("Hydroinformatics/Macromarketing/network.pdf")
+pdf("network.pdf")
 par(mar=rep(0,4))
 set.seed(666)
 plot(c, g, 

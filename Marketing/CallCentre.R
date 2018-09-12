@@ -81,3 +81,4 @@ ggsave("service_levels.png", dpi = 300)
 
 service_level_mc(15, 100, 10, 180, 20, 20, 30, sims = 1000) %>%
     quantile(c(.05, .5, .95))
+
