@@ -1,14 +1,16 @@
 ## Flightpath map
-## https://r.prevos.net/create-air-travel-route-maps/
+## https://lucidmanager.org/create-air-travel-route-map
 
 ## Init
 library(tidyverse)
 library(ggmap)
+api <- readLines("google.api") # Text file with the API key
+register_google(key = api)
 library(ggrepel)
 
 ## Read flight and airports lists 
-flights <- read_csv("Geography/flights.csv")
-airports_file <- "Geography/airports.csv"
+flights <- read_csv("flights.csv")
+airports_file <- "airports.csv"
 if (file.exists(airports_file)) {
   airports <- read_csv(airports_file)
   } else {
@@ -16,7 +18,7 @@ if (file.exists(airports_file)) {
 }
 
 ## Lookup coordinates
-## Some airports need counry names to ensure Google finds the correct location
+## Some airports need country names to ensure Google finds the correct location
 ## The geocoding keeps looping till all coordinates have been found
 destinations <- unique(c(flights$From, flights$To))
 new_destinations <- destinations[!destinations %in% airports$airport]
@@ -28,12 +30,13 @@ while (length(new_destinations) > 0) {
       filter(!is.na(lon) | !is.na(lat))
     new_destinations <- destinations[!destinations %in% airports$airport]
 }
-write_csv(airports, "Geography/airports.csv")
+write_csv(airports, "airports.csv")
 
 ## Remove return flights
 d <- vector()
 for (i in 1:nrow(flights)) {
-    d <- which(paste(flights$From, flights$To) %in% paste(flights$To[i], flights$From[i]))
+    d <- which(paste(flights$From, flights$To) %in%
+               paste(flights$To[i], flights$From[i]))
     flights$From[d] <- "R"
 }
 flights <- flights %>%
@@ -41,8 +44,8 @@ flights <- flights %>%
   select(From, To)
 
 ## Add coordinates to flight list
-flights <- merge(flights, airports, by.x="From", by.y="airport")
-flights <- merge(flights, airports, by.x="To", by.y="airport")
+flights <- merge(flights, airports, by.x = "From", by.y = "airport")
+flights <- merge(flights, airports, by.x = "To", by.y = "airport")
 flights <- flights %>% 
   select(From, To, lon.x, lat.x, lon.y, lat.y) %>% 
   as_data_frame()

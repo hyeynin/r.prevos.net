@@ -3,6 +3,8 @@
 
 ## Init
 library(ggmap)
+api <- readLines("google.api") # Text file with the API key
+register_google(key = api)
 library(ggplot2)
 library(ggrepel)
 library(geosphere)
