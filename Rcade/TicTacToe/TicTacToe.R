@@ -8,8 +8,8 @@ draw.board <- function(game) {
     par(mar = rep(1,4))
     plot.new()
     plot.window(xlim = c(0,30), ylim = c(0,30))
-    abline(h = c(10, 20), col="darkgrey", lwd = 4)
-    abline(v = c(10, 20), col="darkgrey", lwd = 4)
+    abline(h = c(10, 20), col = "darkgrey", lwd = 4)
+    abline(v = c(10, 20), col = "darkgrey", lwd = 4)
     text(rep(c(5, 15, 25), 3), c(rep(25, 3), rep(15,3), rep(5, 3)), xo[game + 2], cex = 4)
     # Identify location of any three in a row
     square <- t(matrix(game, nrow = 3))
