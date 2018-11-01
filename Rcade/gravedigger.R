@@ -34,13 +34,12 @@ for (i in 1:20){
 ## Player
 M <- 2
 N <- 2
+A[N, M] <- Y
 ## Skeletons
 S <- c(4, 19, 3, 19, 2, 19)
 
 ## Game play
-repeat{
-    ## Position player
-    A[N, M] <- Y
+repeat{    
     ## Position skeletons
     for (J in seq(1, 5, by = 2)) {
         A[S[J], S[J + 1]] <- E
@@ -55,8 +54,6 @@ repeat{
     v <- paste(as.vector(t(A)), collapse = "")        
     for (i in 1:10)
         print(substr(v, (i - 1) * 20 + 1, (i - 1) * 20 + 20))
-    print(paste(N, M))
-    print(S)
     ## Enter move
     A1 <- toupper(readline(paste0("Enter move ", W, " (You can go N, S, E or W): ")))
     ## Move player
@@ -107,30 +104,33 @@ repeat{
         }
         N <- T
         M <- U
+        A[T, U] <- Y
         ## Move skeletons
         for (J in seq(1, 5, by = 2)) {
             ## Store skeleton position in temp variable
             P <- S[J]
             Q <- S[J + 1]
-            ## Move skeletons
-            if (A1 == "S" & A[P + 1, Q] == Z){
-                S[J] <- S[J] + 1 # Follow player
-                A[P, Q] <- Z
-            }
-            if (A1 == "N" & A[P - 1, Q] == Z){
-                S[J] <- S[J] - 1 # Follow player
-                A[P, Q] <- Z
-            }
-            if (A1 == "E" & A[P, Q - 1] == Z & M < Q){
-                S[J + 1] <- S[J + 1] - 1 # Move towards player
-                A[P, Q] <- Z
-            }
-            if (A1 == "E" & A[P, Q + 1] == Z & M > Q) {
-                S[J + 1] <- S[J + 1] + 1 # Reverse direction
-                A[P, Q] <- Z
-            }
             if (any(c(A[P + 1, Q], A[P - 1 , Q], A[P, Q - 1], A[P, Q + 1]) == Y)) {
                 death <- 1
+            } else
+            {
+                ## Move skeletons
+                if (A1 == "S" & A[P + 1, Q] == Z){
+                    S[J] <- S[J] + 1 # Follow player
+                    A[P, Q] <- Z
+                }
+                if (A1 == "N" & A[P - 1, Q] == Z){
+                    S[J] <- S[J] - 1 # Follow player
+                    A[P, Q] <- Z
+                }
+                if (A1 == "E" & A[P, Q - 1] == Z & M < Q){
+                    S[J + 1] <- S[J + 1] - 1 # Move towards player
+                    A[P, Q] <- Z
+                }
+                if (A1 == "E" & A[P, Q + 1] == Z & M > Q) {
+                    S[J + 1] <- S[J + 1] + 1 # Reverse direction
+                    A[P, Q] <- Z
+                }
             }
         }
     }
