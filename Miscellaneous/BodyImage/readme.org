@@ -1,6 +1,6 @@
 * Using R with Emacs and ESS - A Multi-functional Environment
 
-This Org file explains the Emcas configuration to write code in the R langues in Emacs. For more information go to [[http://lucidmanager.org/using-r-with-emacs/][The Devil is in the Data]].
+This Org file explains the Emacs configuration to write code in the R langues in Emacs. For more information go to [[http://lucidmanager.org/using-r-with-emacs/][The Devil is in the Data]].
 
 This org file shows the elisp code for a minimal configuration to write R code in Emacs. You can write all relevant code to an init file ([[https://orgmode.org/manual/Extracting-source-code.html][tangle]]) with the =C-c C-v C-t= keystrokes.
 
