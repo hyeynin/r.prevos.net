@@ -1,3 +1,7 @@
+## The Devil is in the Data
+## Defining Marketing with the Rvest and Tidytext Packages
+## https://lucidmanager.org/rvest-and-tidytext/
+
 library(tidyverse)
 library(rvest)
 library(tidytext)
@@ -6,7 +10,7 @@ library(RColorBrewer)
 library(topicmodels)
 lm_palette <- c("#f7881f", "#55ace1",  "#5f6c36")
 
-## Rip definitions from website
+## Scrape definitions from website
 definitions <- read_html("https://heidicohen.com/marketing-definition/") %>%
     html_nodes("ol li") %>%
     html_text() %>%
@@ -23,7 +27,8 @@ def_words <- definitions[1:72, ] %>%
 word_freq <- def_words %>%
     anti_join(stop_words) %>%
     count(word) %>%
-    filter(!(word %in% c("marketing", "vice", "president", "executive")))
+    filter(!(word %in%
+             c("marketing", "vice", "president", "chief", "executive", "’")))
 
 pdf("marketingcloud.pdf")
 word_freq %>%
@@ -37,6 +42,7 @@ word_freq %>%
     ggplot(aes(word, n)) + geom_col(fill = lm_palette[2]) +
     coord_flip() +
     theme(text = element_text(size=20))
+
 ggsave("marketingtop10words.png", dpi = 300)
 
 ## Topic models
@@ -59,4 +65,5 @@ marketing_lda %>%
        facet_wrap(~topic, scales = "free") +
        coord_flip() +
        theme(text = element_text(size = 20))
+
 ggsave("MarketingTopics.png", dpi = 300)
