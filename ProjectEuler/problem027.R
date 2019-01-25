@@ -3,7 +3,7 @@
 
 # http://r.prevos.net/quadratic-primes-euler-problem-27/
 
-source("ProjectEuler/euler.R")
+source("euler.R")
 
 t <- proc.time()
 seq.a <- seq(-999, 1001, 2) # a has to be odd
