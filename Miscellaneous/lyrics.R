@@ -20,6 +20,7 @@ get_lyrics <- function(artist, song) {
 }
 
 plot_snowflake <- function(artist, song){
+
     lyrics <- get_lyrics(artist, song)
     lyrics <- data_frame(line = lyrics) %>%
         filter(line != "")
@@ -58,3 +59,6 @@ l2 <- plot_snowflake("Queen", "Bohemian Rhapsody")
 grid.arrange(l1, l2, ncol = 2)
 dev.off()
 getwd()
+
+artist <- "Frank Zappa"
+song <- "Titties Beer"
